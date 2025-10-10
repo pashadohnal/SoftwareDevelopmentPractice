@@ -1,4 +1,4 @@
-package deck;
+package blackjack;
 
 import java.util.*;
 
@@ -18,11 +18,21 @@ public class Deck {
 
     private static final Deck deck = new Deck();
     
+    // ----- FOR OTHERS -----
+    
     // draw card
     static private int index =0;
     
     static public char draw() {
     	return DECK.get(index++);
+    }
+    
+    // cal values
+    // TODO:　ｉｔ　ｉｓ　ｂｅｔｔｅｒ　ｔｏ　ｌｅｔ　ｐｌａｙｅｒ　ｃｏｕｎｔ　ｔｈｅ　ｖａｌｕｅ　ｏｆ　ｃａｒｄｓ
+    static public int valueOf(int value, Character card) {
+		if (card=='A') return(value+11<=21)?11:1;
+		if (card=='J' || card=='Q' || card=='K') return 10;
+		else return (int)card - '0';
     }
     
     // ----- FOR DEBUG -----
