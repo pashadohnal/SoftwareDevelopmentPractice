@@ -2,6 +2,7 @@ package deck;
 
 import java.util.*;
 
+// Using Singleton Design Pattern
 public class Deck {
     private final Character[] RANKS = {'A', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'J', 'Q', 'K'};
 
