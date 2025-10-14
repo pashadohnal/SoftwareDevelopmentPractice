@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Player {
 	private ArrayList<Character> hand = new ArrayList<>();
-	private int value =0;
+	protected int value =0;
 	
 	public Player(){}
 	
