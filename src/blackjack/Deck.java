@@ -59,6 +59,7 @@ public class Deck {
                 value +=0; 
             }
         }
+		// if ACE do not exceeds 21, add it up, when a+a will return 12, a+a+k will return 12
         for (int i = 0; i < aceCount && value <= 21; i++) {
             if (value + 10 <= 21) {
                 value += 10;
