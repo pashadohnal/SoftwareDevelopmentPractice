@@ -13,4 +13,6 @@ public class Player {
 		hand.add(card);
 		value+=Blackjack.valueOf(value, card);
 	}
+	
+	public int getValue() {return value;}
 }

@@ -9,10 +9,12 @@ public class Deck {
     private final static ArrayList<Character> DECK = new ArrayList<>();
 
     private Deck() {
-        DECK.addAll(Arrays.asList(RANKS));
-        DECK.addAll(Arrays.asList(RANKS));
-        DECK.addAll(Arrays.asList(RANKS));
-        DECK.addAll(Arrays.asList(RANKS));
+    	for (int i=0; i<Blackjack.noOfDeckUsed; i++) {
+            DECK.addAll(Arrays.asList(RANKS));
+            DECK.addAll(Arrays.asList(RANKS));
+            DECK.addAll(Arrays.asList(RANKS));
+            DECK.addAll(Arrays.asList(RANKS));    		
+    	}
         Collections.shuffle(DECK);
     }
 
