@@ -20,10 +20,4 @@ public class TestDeck {
     	// check can Deck get second card
     	assertEquals(Deck.draw(), cards.get(1));
     }
-<<<<<<< HEAD
 }
-=======
-    
-    // test commit
-}
->>>>>>> branch 'main' of https://github.com/pashadohnal/SoftwareDevelopmentPractice.git
