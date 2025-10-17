@@ -27,14 +27,7 @@ public class Deck {
     	return DECK.get(index++);
     }
     
-    // cal values
-    // it is better to let the player class to calculate the value
-    // TODO: maybe better to move to the blackjack class　
-    static public int valueOf(int value, Character card) {
-		if (card=='A') return(value+11<=21)?11:1;
-		if (card=='J' || card=='Q' || card=='K') return 10;
-		else return (int)card - '0';
-    }
+
     
     static public void reset() {
     	Collections.shuffle(DECK);

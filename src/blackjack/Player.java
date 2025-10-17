@@ -11,6 +11,6 @@ public class Player {
 	public void draw() {
 		Character card = Deck.draw();
 		hand.add(card);
-		value+=Deck.valueOf(value, card);
+		value+=Blackjack.valueOf(value, card);
 	}
 }
