@@ -21,5 +21,5 @@ public class TestDeck {
     	assertEquals(Deck.draw(), cards.get(1));
     }
     
-    // test commit 
+    // test commit
 }
