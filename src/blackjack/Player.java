@@ -8,9 +8,9 @@ public class Player {
 	
 	public Player(){}
 	
-	public void draw(Deck useDeck) {
-		Character card = useDeck.draw();
+	public void draw() {
+		Character card = Deck.draw();
 		hand.add(card);
-		value+=useDeck.valueOf(value, card);
+		value+=Deck.valueOf(value, card);
 	}
 }

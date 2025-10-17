@@ -1,14 +1,25 @@
+# Blackjack Game Project
 
+## Development Approach
+- agile
+- waterfall
+- TDD
 
-## Blackjack Game Project
-03.10.2025
+## Phases
+- [ ] Basic Game Logic + CLI
+- [ ] GUI
+- [ ] Network Multiplayer
 
-I/O - user input
+## Jobs per person per phases
+- write code for responsible area
+- write test cases for the responsible area
+- write test cases for other people
+- review code for other people
 
-**ACCOUNT BALANCE, BET, HIT, STAND**
+## Phase 1
+- [ ] CLI (I/O - user input)
+- [ ] Game Rule (ACCOUNT BALANCE, BET, HIT, STAND)
+- [x] Cards Deck
 
-**SHUFFLED CARDS**
-
-**[Name of the card: value]**
-
-**HOW MANY DECKS**
+## NOTE
+remember to record any code sections that you had refactored

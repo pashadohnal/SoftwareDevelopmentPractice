@@ -1,17 +1,17 @@
 package unitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import org.junit.jupiter.api.Test;
 
 import blackjack.Deck;
 
 public class TestDeck {
     @Test
     public void testDraw() {
+    	Deck.reset();
     	ArrayList<Character> cards = Deck.getDeck();
     	
     	// check can Deck get first card
