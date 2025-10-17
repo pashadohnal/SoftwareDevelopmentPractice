@@ -2,7 +2,6 @@
 
 ## Development Approach
 - agile
-- waterfall
 - TDD
 
 ## Phases
