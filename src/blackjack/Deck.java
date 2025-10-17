@@ -41,35 +41,5 @@ public class Deck {
     static public ArrayList<Character> getDeck() {
         return new ArrayList<>(DECK);
     }
-	public static Object calValue(ArrayList<Character> hand) {
-        if (hand == null || hand.isEmpty()) {
-            return 0;
-        }
-        int value = 0;
-        int aceCount = 0;
-        for (Character hands : hand) {
-            if (hands == 'A') {
-                aceCount++;
-                value += 1; // Start with Ace as 1
-            } else if (hands == 'J' || hands == 'Q' || hands == 'K') {
-                value += 10;
-            } else if (hands >= '2' && hands <= '9') {
-                value += hands - '0';
-            } else {
-                value +=0; 
-            }
-        }
-		// if ACE do not exceeds 21, add it up, when a+a will return 12, a+a+k will return 12
-        for (int i = 0; i < aceCount && value <= 21; i++) {
-            if (value + 10 <= 21) {
-                value += 10;
-            }
-        }
-        if (value > 21) {
-            return "BUST";
-        }
-        return value;
-    }
-    
 }
 
