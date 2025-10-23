@@ -18,4 +18,67 @@ public class TestPlayer {
     	player.draw();
     	assertEquals(player.getValue(), Blackjack.valueOf(0, cards.get(0)));
     }
+    @Test
+    public void testDraw2() {
+    	Deck.reset();
+    	ArrayList<Character> cards = Deck.getDeck();
+    	Dealer dealer = new Dealer();
+    	dealer.draw();
+    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
+    }
+    @Test
+    public void testDraw3() {
+    	Deck.reset();
+    	ArrayList<Character> cards = Deck.getDeck();
+    	Dealer dealer = new Dealer();
+    	dealer.draw();
+    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
+    	dealer.reset();
+    	assertEquals(dealer.getValue(), 0);
+    }
+    @Test
+    public void testDraw4() {
+    	Deck.reset();
+    	ArrayList<Character> cards = Deck.getDeck();
+    	Dealer dealer = new Dealer();
+    	dealer.draw();
+    	dealer.draw();
+    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)) + Blackjack.valueOf(Blackjack.valueOf(0, cards.get(0)), cards.get(1)));
+    }
+    @Test
+    public void testDraw5() {
+    	Deck.reset();
+    	ArrayList<Character> cards = Deck.getDeck();
+    	Dealer dealer = new Dealer();
+    	dealer.draw(7);
+    	dealer.draw(8);
+    	dealer.draw(2);
+    	dealer.play();
+    	dealer.play();
+    	assertEquals(dealer.getValue(), 17);
+    	assertEquals(3,dealer.hand.size());
+    }
+    @Test
+    public void testDraw6() {
+    	Deck.reset();
+    	ArrayList<Character> cards = Deck.getDeck();
+    	Dealer dealer = new Dealer();
+    	dealer.play();
+    	assertTrue(dealer.getValue() > 17);
+    	assertTrue(dealer.getValue() < 28);
+    }
+    @Test
+    public void testDraw7() {
+    	Deck.reset();
+    	ArrayList<Character> cards = Deck.getDeck();
+    	Dealer dealer = new Dealer();
+    	dealer.draw(9);
+    	dealer.draw(8);
+    	dealer.draw(2);
+    	dealer.play();
+        
+        assertEquals(3, dealer.hand.size());
+    }
+    
+    
 }
