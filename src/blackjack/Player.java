@@ -10,7 +10,7 @@ public class Player {
 	public Player(){}
 	
 	public void draw() {
-		Character card = Deck.draw();
+		Character card = Decks.draw();
 		hand.add(card);
 		value =Blackjack.valueOf(value, card);
 		//Blackjack.updateValue(value, noA, card);

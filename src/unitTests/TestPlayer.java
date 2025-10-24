@@ -11,8 +11,8 @@ public class TestPlayer {
 	
     @Test
     public void testDraw() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Player player = new Player();
     	player.draw();
     	assertEquals(player.getValue(), Blackjack.valueOf(0, cards.get(0)));

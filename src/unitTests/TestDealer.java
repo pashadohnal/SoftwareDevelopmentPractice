@@ -10,16 +10,16 @@ import blackjack.*;
 public class TestDealer {
     @Test
     public void testDraw2() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.draw();
     	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
     }
     @Test
     public void testDraw3() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.draw();
     	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
@@ -28,8 +28,8 @@ public class TestDealer {
     }
     @Test
     public void testDraw4() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.draw();
     	dealer.draw();
@@ -37,8 +37,8 @@ public class TestDealer {
     }
     @Test
     public void testDraw5() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.draw(7);
     	dealer.draw(8);
@@ -50,8 +50,8 @@ public class TestDealer {
     }
     @Test
     public void testDraw6() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.play();
     	assertTrue(dealer.getValue() > 17);
@@ -59,8 +59,8 @@ public class TestDealer {
     }
     @Test
     public void testDraw7() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.draw(9);
     	dealer.draw(8);

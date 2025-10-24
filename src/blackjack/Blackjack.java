@@ -1,11 +1,11 @@
 package blackjack;
 
 import java.util.ArrayList;
+import blackjack.*;
 
 public class Blackjack {
 	static public int noOfDeckUsed =1;
-    // cal values
-    // it is better to let the player class to calculate the value
+
     static public int valueOf(int value, Character card) {
 		if (card=='A') return(value+11<=21)?11:1;
 		if (card=='J' || card=='Q' || card=='K') return 10; 
@@ -16,9 +16,12 @@ public class Blackjack {
     	int value =0;
     	int noA =0;
     	for (Character card: hand) {
+    		if (!Decks.RANKS.contains(card)) throw new InvalidCardException("The hand has unknown card(s)");
+    		
     		if (card=='A') {value +=1; noA++;}
     		if (card=='J' || card=='Q' || card=='K') return value +=10;
-    		else throw new InvalidCardException("asd");
+    		else value +=(int)card - '0';
+    		
     	}
 
     	ArrayList<Integer> values = new ArrayList<>();
@@ -27,5 +30,13 @@ public class Blackjack {
     	int index =0;
     	while (values.get(index)>21 && index<values.size()) index++;
     	return values.get(index);
+    }
+}
+
+class InvalidCardException extends Exception {
+	private static final long serialVersionUID = 1L;
+
+    public InvalidCardException(String message) {
+        super(message);
     }
 }

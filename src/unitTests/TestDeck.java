@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import blackjack.Deck;
+import blackjack.Decks;
 
 public class TestDeck {
     @Test
     public void testDraw() {
-    	Deck.reset();
-    	ArrayList<Character> cards = Deck.getDeck();
+    	Decks.reset();
+    	ArrayList<Character> cards = Decks.getDeck();
     	
     	// check can Deck get first card
-    	assertEquals(Deck.draw(), cards.get(0));
+    	assertEquals(Decks.draw(), cards.get(0));
     	
     	// check can Deck get second card
-    	assertEquals(Deck.draw(), cards.get(1));
+    	assertEquals(Decks.draw(), cards.get(1));
     }
 }

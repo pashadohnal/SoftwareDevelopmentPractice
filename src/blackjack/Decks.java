@@ -3,22 +3,25 @@ package blackjack;
 import java.util.*;
 
 // Using Singleton Design Pattern
-public class Deck {
-    private final Character[] RANKS = {'A', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'J', 'Q', 'K'};
+public class Decks {
+    public static final List<Character> RANKS = Arrays.asList(
+            'A', '2', '3', '4', '5', '6', '7', '8', '9', 'J', 'Q', 'K'
+        );
+
     
     private final static ArrayList<Character> DECK = new ArrayList<>();
 
-    private Deck() {
+    private Decks() {
     	for (int i=0; i<Blackjack.noOfDeckUsed; i++) {
-            DECK.addAll(Arrays.asList(RANKS));
-            DECK.addAll(Arrays.asList(RANKS));
-            DECK.addAll(Arrays.asList(RANKS));
-            DECK.addAll(Arrays.asList(RANKS));    		
+            DECK.addAll(RANKS);
+            DECK.addAll(RANKS);
+            DECK.addAll(RANKS);
+            DECK.addAll(RANKS);
     	}
         Collections.shuffle(DECK);
     }
 
-    private static final Deck deck = new Deck();
+    private static final Decks deck = new Decks();
     
     // ----- FOR OTHERS -----
     
@@ -44,12 +47,5 @@ public class Deck {
     }
 }
 
-class InvalidCardException extends Exception {
-	private static final long serialVersionUID = 1L;
-
-    public InvalidCardException(String message) {
-        super(message);
-    }
-}
 
 

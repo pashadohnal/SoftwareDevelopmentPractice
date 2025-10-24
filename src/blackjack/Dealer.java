@@ -9,6 +9,7 @@ public class Dealer extends Player {
 			draw();
 		}
 	}
+	
 	public void showHand(boolean showAll) {
 		if(showAll) {
 			System.out.println("Dealer's hand value: " + getValue());
