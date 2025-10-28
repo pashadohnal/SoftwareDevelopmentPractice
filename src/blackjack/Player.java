@@ -5,13 +5,15 @@ import java.util.*;
 public class Player {
 	public ArrayList<Character> hand = new ArrayList<>();
 	protected int value =0;
-	protected int noA =0;
 	
 	public Player(){}
+	
+	@Deprecated
 	public void draw(int x) {
 		value+=x;
 		hand.add('X');
 	}
+	
 	public void draw() {
 		Character card = Decks.draw();
 		hand.add(card);

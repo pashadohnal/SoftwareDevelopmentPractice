@@ -4,6 +4,7 @@ public class Dealer extends Player {
 	public Dealer() {
 		super();
 	}
+	
 	public void play() {
 		while (getValue() < 17) {
 			draw();

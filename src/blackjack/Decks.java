@@ -9,7 +9,7 @@ public class Decks {
         );
 
     
-    private final static ArrayList<Character> DECK = new ArrayList<>();
+    private static ArrayList<Character> DECK = new ArrayList<>();
 
     private Decks() {
     	for (int i=0; i<Blackjack.noOfDeckUsed; i++) {
@@ -21,7 +21,7 @@ public class Decks {
         Collections.shuffle(DECK);
     }
 
-    private static final Decks deck = new Decks();
+    private static Decks deck = new Decks();
     
     // ----- FOR OTHERS -----
     
@@ -35,15 +35,20 @@ public class Decks {
 
     
     static public void reset() {
-    	Collections.shuffle(DECK);
-    	index =0;
+    	Decks.deck = new Decks();
+    	Decks.reset();
     }
-    
+        
     // ----- FOR DEBUG -----
     
     // get the whole deck
     static public ArrayList<Character> getDeck() {
         return new ArrayList<>(DECK);
+    }
+    
+    static public void reset(ArrayList<Character> deck) {
+    	Decks.DECK =deck;
+    	Decks.index =0;
     }
 }
 
