@@ -23,32 +23,22 @@ public class Decks {
 
     private static Decks deck = new Decks();
     
-    // ----- FOR OTHERS -----
-    
-    // draw card
     static private int index =0;
     
     static public char draw() {
     	return DECK.get(index++);
     }
     
-
-    
     static public void reset() {
     	Decks.deck = new Decks();
     	index = 0;
     }
         
-    // ----- FOR DEBUG -----
+    // ----- FOR DEBUG AND TESTING ONLY -----
     
     // get the whole deck
     static public ArrayList<Character> getDeck() {
         return new ArrayList<>(DECK);
-    }
-    
-    static public void reset(ArrayList<Character> deck) {
-    	Decks.DECK =deck;
-    	Decks.index =0;
     }
 }
 

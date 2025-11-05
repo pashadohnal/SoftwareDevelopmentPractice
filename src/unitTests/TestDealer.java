@@ -40,13 +40,13 @@ public class TestDealer {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
-    	dealer.draw(7);
-    	dealer.draw(8);
-    	dealer.draw(2);
+    	dealer.draw('7');
+    	dealer.draw('8');
+    	dealer.draw('2');
     	dealer.play();
     	dealer.play();
     	assertEquals(dealer.getValue(), 17);
-    	assertEquals(3,dealer.hand.size());
+    	assertEquals(3,dealer.getHand().size());
     }
     @Test
     public void testDraw6() {
@@ -62,12 +62,12 @@ public class TestDealer {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
-    	dealer.draw(9);
-    	dealer.draw(8);
-    	dealer.draw(2);
+    	dealer.draw('9');
+    	dealer.draw('8');
+    	dealer.draw('2');
     	dealer.play();
         
-        assertEquals(3, dealer.hand.size());
+        assertEquals(3, dealer.getHand().size());
     }
     
     

@@ -7,37 +7,38 @@ public class Blackjack {
 	static public int noOfDeckUsed =1;
 
 	@Deprecated
+	// use calValue instead
     static public int valueOf(int value, Character card) {
 		if (card=='A') return(value+11<=21)?11:1;
 		if (card=='J' || card=='Q' || card=='K') return 10; 
 		else return (int)card - '0'; //Card 10 would be 1. There is no conversion from char "1" into 10. Either better to store as a string or convert using a dictionary (Map).
     }
-    
-    static public int calValue(ArrayList<Character> hand) throws InvalidCardException {
+	
+	/**
+	 * Calculates the value of the hand
+	 * Note that A can be 1 or 11
+	 *
+	 * @param hand
+	 * @return the value of the hand
+	 */
+    static public int calValue(ArrayList<Character> hand) {
     	int value =0;
     	int noA =0;
     	for (Character card: hand) {
-    		if (!Decks.RANKS.contains(card)) throw new InvalidCardException("The hand has unknown card(s)");
+    		if (!Decks.RANKS.contains(card)) continue;
     		
-    		if (card=='A') {value +=1; noA++;}
+    		if (card=='A') {value +=1; noA++; continue;}
     		if (card=='J' || card=='Q' || card=='K') return value +=10;
     		else value +=(int)card - '0';
     		
     	}
 
     	ArrayList<Integer> values = new ArrayList<>();
-    	while(noA>=0) values.add(value+10*noA);
+    	values.add(value);
+    	while(noA-->0) {values.add(values.getLast()+10);}
 
     	int index =0;
-    	while (values.get(index)>21 && index<values.size()) index++;
+    	while (index+1<values.size() && values.get(index+1)<=21) index++;
     	return values.get(index);
-    }
-}
-
-class InvalidCardException extends Exception {
-	private static final long serialVersionUID = 1L;
-
-    public InvalidCardException(String message) {
-        super(message);
     }
 }
