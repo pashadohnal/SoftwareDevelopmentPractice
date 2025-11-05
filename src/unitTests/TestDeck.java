@@ -1,12 +1,13 @@
 package unitTests;
-
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import blackjack.Decks;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+// import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
 
 public class TestDeck {
     @Test

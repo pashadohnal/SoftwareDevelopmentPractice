@@ -36,7 +36,7 @@ public class Decks {
     
     static public void reset() {
     	Decks.deck = new Decks();
-    	Decks.reset();
+    	index = 0;
     }
         
     // ----- FOR DEBUG -----
