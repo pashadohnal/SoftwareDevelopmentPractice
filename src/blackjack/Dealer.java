@@ -4,7 +4,21 @@ public class Dealer extends Player {
 	public Dealer() {
 		super();
 	}
-	
+	public static void initialDeal(Player player, Dealer dealer) {
+	    List<Player> players = new ArrayList<>();
+	    players.add(player);
+	    initialDeal(players, dealer);
+	}
+	public static void initialDeal(List<Player> players, Dealer dealer) {
+	    for (Player p : players) {
+	        p.draw();
+	    }
+	    dealer.draw(); 
+	    for (Player p : players) {
+	        p.draw();
+	    }
+	    dealer.draw();
+	}
 	public void play() {
 		while (getValue() < 17) {
 			draw();
@@ -23,3 +37,4 @@ public class Dealer extends Player {
 		}
 	}
 }
+
