@@ -27,14 +27,21 @@ public class Dealer extends Player {
 	
 	public void showHand(boolean showAll) {
 		if(showAll) {
+			for(Character card : getHand()) {
+				System.out.print(card + " ");
+			}
 			System.out.println("Dealer's hand value: " + getValue());
 		} else if(getHand().size()>1){
 			Character firstCard = getHand().get(0);
-			System.out.println("Dealer's hand value: " + Blackjack.valueOf(0, firstCard) + " + [hidden]");
+			if(firstCard == 'A')
+				System.out.print("Dealer's hand value: A" +" [hidden] ");
+		    else
+		    	System.out.println("Dealer's hand value: " + Blackjack.valueOf(0, firstCard) + " + [hidden]");
 		}
 		else {
 			System.out.println("Dealer has no cards yet.");
 		}
 	}
 }
+
 
