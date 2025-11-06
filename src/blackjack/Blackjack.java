@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
 import blackjack.*;
 
 public class Blackjack {
@@ -37,16 +38,7 @@ public class Blackjack {
     	while (index+1<values.size() && values.get(index+1)<=21) index++;
     	return values.get(index);
     }
-
-    	ArrayList<Integer> values = new ArrayList<>();
-    	values.add(value);
-    	while(noA-->0) {values.add(values.getLast()+10);}
-
-    	int index =0;
-    	while (index+1<values.size() && values.get(index+1)<=21) index++;
-    	return values.get(index);
-    }
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Blackjack game");
         int nPlayers = 0;
