@@ -57,8 +57,7 @@ public class Blackjack {
             } catch (NumberFormatException e) {
                 System.out.print("Invalid input. Enter a number (1-6): ");
             }
-        };
-        scanner.nextLine();       
+        };      
         List<Player> players = new ArrayList<>();
         for (int i = 0; i < nPlayers; i++) {
             players.add(new Player());
