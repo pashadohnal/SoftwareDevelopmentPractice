@@ -12,17 +12,17 @@ public class TestDealer {
     public void testDraw2() {
     	Decks decks = new Decks(); 
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
+    	Bot dealer = new Bot();
     	dealer.draw();
-    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
+    	assertEquals(dealer.getValue(), SinglePlayer.valueOf(0, cards.get(0)));
     }
     @Test
     public void testDraw3() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
+    	Bot dealer = new Bot();
     	dealer.draw();
-    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
+    	assertEquals(dealer.getValue(), SinglePlayer.valueOf(0, cards.get(0)));
     	dealer.reset();
     	assertEquals(dealer.getValue(), 0);
     }
@@ -30,16 +30,16 @@ public class TestDealer {
     public void testDraw4() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
+    	Bot dealer = new Bot();
     	dealer.draw();
     	dealer.draw();
-    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)) + Blackjack.valueOf(Blackjack.valueOf(0, cards.get(0)), cards.get(1)));
+    	assertEquals(dealer.getValue(), SinglePlayer.valueOf(0, cards.get(0)) + SinglePlayer.valueOf(SinglePlayer.valueOf(0, cards.get(0)), cards.get(1)));
     }
     @Test
     public void testDraw5() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
+    	Bot dealer = new Bot();
     	dealer.draw('7');
     	dealer.draw('8');
     	dealer.draw('2');
@@ -52,7 +52,7 @@ public class TestDealer {
     public void testDraw6() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
+    	Bot dealer = new Bot();
     	dealer.play();
     	assertTrue(dealer.getValue() > 17);
     	assertTrue(dealer.getValue() < 28);
@@ -61,7 +61,7 @@ public class TestDealer {
     public void testDraw7() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
+    	Bot dealer = new Bot();
     	dealer.draw('9');
     	dealer.draw('8');
     	dealer.draw('2');
