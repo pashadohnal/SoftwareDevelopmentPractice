@@ -38,6 +38,7 @@ public class Blackjack {
     	while (index+1<values.size() && values.get(index+1)<=21) index++;
     	return values.get(index);
     }
+    
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Blackjack game");
