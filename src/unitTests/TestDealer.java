@@ -10,7 +10,7 @@ import blackjack.*;
 public class TestDealer {
     @Test
     public void testDraw2() {
-    	Decks.reset();
+    	Decks decks = new Decks(); 
     	ArrayList<Character> cards = Decks.getDeck();
     	Dealer dealer = new Dealer();
     	dealer.draw();

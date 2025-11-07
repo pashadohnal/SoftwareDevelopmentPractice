@@ -2,44 +2,54 @@ package blackjack;
 
 import java.util.*;
 
-// Using Singleton Design Pattern
+/**
+ * Represent decks for the game
+ * Note that multiple decks is used to prevent card counting
+ */
 public class Decks {
-    public static final List<Character> RANKS = Arrays.asList(
-            'A', '2', '3', '4', '5', '6', '7', '8', '9', 'J', 'Q', 'K'
-        );
+	/**
+	 * Store the shuffled cards
+	 */
+	private ArrayList<Card> cards = new ArrayList<>();;
+	
+	/**
+	 * Record the index of the next card to be drawn
+	 */
+	private int index = 0;
+	
+	/**
+	 * @return a whole ordered poker deck
+	 */
+	private ArrayList<Card> genDeck() {
+		ArrayList<Card> cards = new ArrayList<>();
+		for (char suit : Arrays.asList('♠', '♥', '♦', '♣')) {
+			for (int face = 1; face <= 13; face++) {
+			    cards.add(new Card(suit, face));
+			}
 
-    
-    private static ArrayList<Character> DECK = new ArrayList<>();
-
-    private Decks() {
-    	for (int i=0; i<Blackjack.noOfDeckUsed; i++) {
-            DECK.addAll(RANKS);
-            DECK.addAll(RANKS);
-            DECK.addAll(RANKS);
-            DECK.addAll(RANKS);
-    	}
-        Collections.shuffle(DECK);
-    }
-
-    private static Decks deck = new Decks();
-    
-    static private int index =0;
-    
-    static public char draw() {
-    	return DECK.get(index++);
-    }
-    
-    static public void reset() {
-    	Decks.deck = new Decks();
-    	index = 0;
-    }
-        
-    // ----- FOR DEBUG AND TESTING ONLY -----
-    
-    // get the whole deck
-    static public ArrayList<Character> getDeck() {
-        return new ArrayList<>(DECK);
-    }
+		}
+		return cards;
+	}
+	
+	/**
+	 * Constructor of the class
+	 * @param noOfDeckUsed
+	 */
+	public Decks(int noOfDeckUsed) {
+		for (int i=0; i<noOfDeckUsed; i++) {
+			cards.addAll(genDeck());
+		}
+		reset();
+	}
+	
+	public Card draw() {
+		return cards.get(index++);
+	}
+	
+	public void reset() {
+		Collections.shuffle(cards);
+		index =0;	
+	}
 }
 
 
