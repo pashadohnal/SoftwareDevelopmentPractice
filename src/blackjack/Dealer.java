@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package blackjack;
 
 import java.util.ArrayList;
@@ -27,7 +28,11 @@ public class Dealer extends Player {
 			draw();
 		}
 	}
+=======
+	package blackjack;
+>>>>>>> branch 'calValue_v1.1' of https://github.com/pashadohnal/SoftwareDevelopmentPractice.git
 	
+<<<<<<< HEAD
 	public void showHand(boolean showAll) {
 		if(showAll) {
 			for(Character card : getHand()) {
@@ -40,11 +45,33 @@ public class Dealer extends Player {
 				System.out.print("Dealer's hand value: A" +" [hidden] ");
 		    else
 		    	System.out.println("Dealer's hand value: " + Blackjack.valueOf(0, firstCard) + " + [hidden]");
+=======
+	public class Dealer extends Player {
+		public Dealer() {
+			super(0);
+>>>>>>> branch 'calValue_v1.1' of https://github.com/pashadohnal/SoftwareDevelopmentPractice.git
 		}
-		else {
-			System.out.println("Dealer has no cards yet.");
+		public void play() {
+			while (getValue() < 17) {
+				draw();
+			}
+		}
+		
+		public void showHand(boolean showAll) {
+			if(showAll) {
+				System.out.println("Dealer's hand value: " + getValue());
+			} else if(hand.size()>1){
+				Character firstCard = hand.get(0);
+				System.out.println("Dealer's hand value: " + Blackjack.valueOf(0, firstCard) + " + [hidden]");
+			}
+			else {
+				System.out.println("Dealer has no cards yet.");
+			}
 		}
 	}
+<<<<<<< HEAD
 }
 
 
+=======
+>>>>>>> branch 'calValue_v1.1' of https://github.com/pashadohnal/SoftwareDevelopmentPractice.git
