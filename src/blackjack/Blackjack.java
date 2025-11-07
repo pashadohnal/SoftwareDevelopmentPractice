@@ -71,7 +71,9 @@ public class Blackjack {
             playAgain = scanner.nextLine().trim().equalsIgnoreCase("y");
         }
         System.out.println("Game finish!");
-        scanner.close();}
+        scanner.close();
+    }
+    
     private static void startGame(List<Player> players, Dealer dealer, Scanner scanner) {
         Decks.reset();
         for (Player p : players)
@@ -129,6 +131,7 @@ public class Blackjack {
             }
         }
     }
+    
     private static void playerTurn(Player player, Dealer dealer, Scanner scanner, int playerNum) {
         while (calValue(player.getHand()) < 21) {
             System.out.print("\nPlayer " + playerNum + " - (H)it or (S)tand? ");
@@ -152,6 +155,7 @@ public class Blackjack {
             }
         }
     }
+    
     private static void printHand(List<Character> hand) {
         for (int i = 0; i < hand.size(); i++) {
             System.out.print(hand.get(i));
