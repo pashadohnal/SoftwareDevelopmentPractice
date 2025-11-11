@@ -57,13 +57,12 @@ public class Card {
 	 * Convert to card to String
 	 */
 	public String toString() {
-		String value;
+		String value = Integer.toString(face);
 		if (face==A) {value = "A";} 
 		if (face==J) {value = "J";}
 		if (face==Q) {value = "Q";}
 		if (face==K) {value = "K";}
-		else {value = Integer.toString(face);}
-		return String.valueOf(suit) + face;
+		return String.valueOf(suit) + value;
 	}
 	
 	/*

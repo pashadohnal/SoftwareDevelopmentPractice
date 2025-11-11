@@ -9,7 +9,7 @@ public class Player {
 	/**
 	 * Store the cards a player has
 	 */
-	protected ArrayList<Card> hand;
+	protected ArrayList<Card> hand = new ArrayList<>();
 	
 	/**
 	 * the value of player's hand
@@ -44,6 +44,8 @@ public class Player {
     	while (index+1<values.size() && values.get(index+1)<=21) index++;
     	return values.get(index);		
 	}
+	
+	public int getValue() {return value;}
 
 	/**
 	 * constructor of Player
@@ -67,6 +69,15 @@ public class Player {
 	}
 	
 	/**
+	 * stupid ai that allow the bot to play the game
+	 * @return true is the bot hit, false if stand
+	 */
+	public boolean play() {
+		if (value<17) {draw();}
+		return value<17;
+	}
+	
+	/**
 	 * the amount of money the player has
 	 */
 	private int accountBalance;
@@ -75,6 +86,10 @@ public class Player {
 	 * the amount of bet the player put
 	 */
 	private int bet;
+	
+	public int getAccountBalance() {
+		return accountBalance;
+	}
 	
 	/**
 	 * allow the player to place bet
@@ -88,16 +103,39 @@ public class Player {
 	}
 	
 	/**
+	 * Convert Hand to String
+	 * @param hide
+	 * @return
+	 */
+	public String handToString(boolean hide) {
+		if (hide) {
+			return hand.get(0).toString() + " Hidden";
+		}
+		String cards = "Value:" + value + " ";
+		for (Card card: hand) {
+			cards += " " + card.toString();
+		}
+		return cards;
+	}
+	
+	public void updateBalance(int dealerValue) {
+		if (dealerValue>21) {blackjack();}
+		if (dealerValue<value) {blackjack();}
+		if (dealerValue>value) {bust();}
+		bet = 0;
+	}
+	
+	/**
 	 * the player won and get the bet
 	 */
-	public void blackjack() {
+	private void blackjack() {
 		accountBalance +=bet;
 	}
 	
 	/**
 	 * the player lose and lost the bet
 	 */
-	public void bust() {
+	private void bust() {
 		accountBalance -=bet;
 	}
 	
