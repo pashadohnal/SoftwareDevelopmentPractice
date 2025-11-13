@@ -119,10 +119,10 @@ public class Player {
 	}
 	
 	public void updateBalance(int dealerValue) {
-		if (dealerValue>21) {blackjack();}
-		if (dealerValue<value) {blackjack();}
-		if (dealerValue>value) {bust();}
-		bet = 0;
+		if(value>21) {bust();return;}
+		if(dealerValue>21) {blackjack();return;}
+		if(value>dealerValue) {blackjack();return;};
+		if(value<dealerValue) {bust();return;};
 	}
 	
 	/**
