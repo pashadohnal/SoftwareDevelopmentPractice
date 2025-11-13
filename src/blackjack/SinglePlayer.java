@@ -18,12 +18,9 @@ public class SinglePlayer {
     	Player dealer = new Player(decks, 0);
     	ArrayList<Player> bots = setup(scanner, decks);
     	Player human = bots.removeLast();
-    	boolean lostall = false;
     	do {
     		reset(decks, dealer, human, bots);
-    		initBet(scanner, human,lostall);
-    		if(lostall) {break;
-    		}
+    		initBet(scanner, human);
     		initPlayers(dealer, human, bots);
     		sideBet(scanner, dealer);
     		while(round(scanner, dealer, human, bots)) {};
@@ -83,10 +80,9 @@ public class SinglePlayer {
     /**
      * let human player and bots to put their initial bet
      */
-    private static void initBet(Scanner scanner, Player human, boolean lostall) {
+    private static void initBet(Scanner scanner, Player human) { // can still play even <=0, having approach to solve but waiting for time implementing
         if (human.getAccountBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
-            lostall = true;
             return;
         }
 
