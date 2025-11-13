@@ -18,12 +18,16 @@ public class SinglePlayer {
     	Player dealer = new Player(decks, 0);
     	ArrayList<Player> bots = setup(scanner, decks);
     	Player human = bots.removeLast();
+    	boolean lostall = false;
     	do {
     		reset(decks, dealer, human, bots);
-    		initBet(scanner, human);
+    		initBet(scanner, human,lostall);
+    		if(lostall) {break;
+    		}
     		initPlayers(dealer, human, bots);
     		sideBet(scanner, dealer);
     		while(round(scanner, dealer, human, bots)) {};
+    		sidBetfinish(scanner, dealer);
     		updateBalance(dealer, human, bots);
     		showBalance(human, bots);
     	} while(nextRound(scanner));
@@ -71,7 +75,7 @@ public class SinglePlayer {
     	}
     	
     	ArrayList<Player> result = new ArrayList<>();
-    	for (int i=0; i<nPlayers; i++) {result.add(new Player(decks, initBalance));}
+    	for (int i=0; i<nPlayers; i++) {Player bot = new Player(decks, 100000);bot.betting(1000); result.add(bot);}
     	result.add(new Player(decks, initBalance));
     	return result;
     }
@@ -79,24 +83,32 @@ public class SinglePlayer {
     /**
      * let human player and bots to put their initial bet
      */
-    private static void initBet(Scanner scanner, Player human) {
-    	int bet =0;
-    	System.out.print("Your account has $" + human.getAccountBalance() + ") ");
-    	while (true) {
-    		System.out.print("Please place your bet : ");
-    		
-    		try {
-    			String input = scanner.nextLine().trim();
-    			bet = Integer.parseInt(input);
-    			human.betting(bet);
-    		} catch (NumberFormatException e) {
-                System.out.println("Invalid input");
+    private static void initBet(Scanner scanner, Player human, boolean lostall) {
+        if (human.getAccountBalance() <= 0) {
+            System.out.println("Lost all. Cannot place bet.");
+            lostall = true;
+            return;
+        }
+
+        int bet = 0;
+        System.out.print("Your account has $" + human.getAccountBalance() + ". ");
+
+        while (true) {
+            System.out.print("Please place your bet : ");
+            String input = scanner.nextLine().trim();
+
+            try {
+                bet = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
                 continue;
-    		}
-    		
-    		if (human.betting(bet)) {break;}
-    		System.out.println("Not enough money");
-    	}
+            }
+            if (human.betting(bet)) {
+                break;
+            } else {
+                System.out.println("Not enough money. Try again.");
+            }
+        }
     }
     
     /**
@@ -127,42 +139,83 @@ public class SinglePlayer {
     private static void sideBet(Scanner scanner, Player dealer) {
     	System.out.println(dealer.handToString(true));
     }
-    
+
+	private static void sidBetfinish(Scanner scanner, Player dealer) {
+		System.out.println("Dealer's " + dealer.handToString(false));
+	}
     /**
      * play 1 iteration of the game
      * @return true if the game continue
      */
-    private static boolean round(Scanner scanner, Player dealer, Player human, ArrayList<Player> bots) {
-    	boolean next = dealer.play();
-    	System.out.println("Dealer " + dealer.handToString(false));
-    	System.out.println("Player " + human.handToString(false));
-    	System.out.print("(H)it or (S)tand : ");
-    	while (true) {
-    		char choice = scanner.nextLine().charAt(0);
-    		if (choice=='H') {
-    			human.draw();
-    			System.out.println(human.handToString(false));
-    			next = true;
-    			break;
-    		}
-    		if (choice=='S') {
-    			break;
-    		}
-    		System.out.print("Invalid Input");
-    	}
-    	for (Player bot: bots) {
-    		next = next | bot.play();
-    	}
-    	
-    	return next;
-    }
-    
+	private static boolean round(Scanner scanner, Player dealer, Player human, ArrayList<Player> bots) {
+	    System.out.println("Player " + human.handToString(false));
+	    while (true) {
+	        System.out.print("(H)it or (S)tand : ");
+	        String input = scanner.nextLine().trim().toUpperCase();
+	        if (input.isEmpty()) {
+	            System.out.println("Invalid input. Please type H or S.");
+	            continue;
+	        }
+	        char choice = input.charAt(0);
+	        if (choice == 'H') {
+	            human.draw();
+	            System.out.println("Player " + human.handToString(false));
+	            if (human.getValue() > 21) {
+	                System.out.println("Player busts!");
+	                break;
+	            }
+	        } else if (choice == 'S') {
+	            break;
+	        } else {
+	            System.out.println("Invalid input. Please type H or S.");
+	        }
+	    }
+	    for (int i = 0; i < bots.size(); i++) {
+	        Player bot = bots.get(i);
+	        System.out.println("Bot " + (i + 1) + " " + bot.handToString(false));
+
+	        while (true) {
+	            System.out.print("Bot " + (i + 1) + " (H)it or (S)tand? ");
+	            boolean hit = bot.getValue() < 17;
+
+	            if (hit) {
+	                System.out.println("H");
+	                bot.draw();
+	                System.out.println("Bot " + (i + 1) + " hits: " + bot.handToString(false));
+	                if (bot.getValue() > 21) {
+	                    System.out.println("Bot " + (i + 1) + " busts!");
+	                    break;
+	                }
+	            } else {
+	                System.out.println("S");
+	                System.out.println("Bot " + (i + 1) + " stands.");
+	                break;
+	            }
+	            try { Thread.sleep(600); } catch (Exception e) {}  // readable pace
+	        }
+	    }
+	    System.out.println("Dealer's " + dealer.handToString(false));  // Reveal both cards
+	    while (dealer.getValue() < 17) {
+	        dealer.draw();
+	        System.out.println("Dealer hits: " + dealer.handToString(false));
+	        if (dealer.getValue() > 21) {
+	            System.out.println("Dealer busts!");
+	            break;
+	        }
+	    }
+	    if (dealer.getValue() >= 17 && dealer.getValue() <=21) {
+	        System.out.println("Dealer stands.");
+	    }
+
+	    return false;
+	}    
     /**
      * reset the hands of dealer, player and bots, but not their balance
      */
     private static void reset(Decks decks, Player dealer, Player human, ArrayList<Player> bots) {
     	decks.reset();
     	dealer.reset();
+        human.reset();
     	for (Player bot: bots) {bot.reset();}
     }
     
@@ -187,8 +240,8 @@ public class SinglePlayer {
     	System.out.print("Continue (Y/N)? ");
     	while (true) {
     		char input = scanner.nextLine().charAt(0);
-    		if (input=='T') {return true;}
-    		if (input=='F') {return false;}
+    		if (input=='Y') {return true;}
+    		if (input=='N') {return false;}
     		System.out.print("Invalid Input.");
     	}
     }
