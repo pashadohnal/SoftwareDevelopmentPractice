@@ -1,28 +1,28 @@
 package blackjack;
 
+import java.util.ArrayList;
+
 /**
  * Represents a Poker Card
  */
 public class Card {
-	/**
-	 * Store the face of the card
-	 * 2 to 10
-	 * A -> 1
-	 * J, K, Q -> 11, 12, 13
-	 */		
-	private int face; 
+
 
 	/**
-	 * Store the suit of the card
-	 * ♠, ♥, ♦, ♣
+	 * Store the suit of the card (enum)
 	 */	
-	private char suit;
+	private Suit suit;
+	
+	/**
+	 * Store the face of the card (enum)
+	 */	
+	private Face face; 
 	
 	/**
 	 * Store the value of the card in blackjack
 	 * A : 1 (A can also be 11 but that will be handled by other part of the code)
 	 * J, K, Q : 10
-	 * others : their face their fate
+	 * others : their face value
 	 */	
 	private int value;
 
@@ -30,19 +30,33 @@ public class Card {
 	 * Constructor of the Card
 	 * @param Assume Correct
 	 */	
-	public Card(char suit, int face) {
-		this.face = face;
+	public Card(Suit suit, Face face) {
 		this.suit = suit;
-		if (face==1) {this.value =1;} 
-		if (face>10) {this.value =10;}
-		this.value = face;
+		this.face = face;
+		int faceVal = face.getValue();
+		if (faceVal > 10) {
+			this.value = 10;
+		} else {
+			this.value = faceVal;
+		}
+	}
+	
+	public static ArrayList<Card> genDeck() {
+		ArrayList<Card> cards = new ArrayList<>();
+		// iterate over the Suit and Face enums defined in Card
+		for (Card.Suit suit : Card.Suit.values()) {
+			for (Card.Face face : Card.Face.values()) {
+				cards.add(new Card(suit, face));
+			}
+		}
+		return cards;
 	}
 	
 	/**
 	 * @return true if the card is an Ace
 	 */	
 	public boolean isAce() {
-		return face==1;
+		return face.isAce();
 	}
 	
 	/**
@@ -57,20 +71,56 @@ public class Card {
 	 * Convert to card to String
 	 */
 	public String toString() {
-		String value = Integer.toString(face);
-		if (face==A) {value = "A";} 
-		if (face==J) {value = "J";}
-		if (face==Q) {value = "Q";}
-		if (face==K) {value = "K";}
-		return String.valueOf(suit) + value;
+		String faceStr = face.display();
+		return String.valueOf(suit.getSymbol()) + faceStr;
 	}
 	
-	/*
-	 * Sudo Enum
-	 * @see Player.calValue()
-	 */
-	public static final int A = 1;
-	public static final int J = 11;
-	public static final int Q = 12;
-	public static final int K = 13;
+	public enum Suit {
+	    SPADE('♠'),
+	    HEART('♥'),
+	    DIAMOND('♦'),
+	    CLUB('♣');
+
+	    private final char symbol;
+
+	    Suit(char symbol) {
+	        this.symbol = symbol;
+	    }
+
+	    public char getSymbol() {
+	        return symbol;
+	    }
+	}
+	
+	public enum Face {
+		A(1), TWO(2), THREE(3), FOUR(4), FIVE(5), SIX(6), SEVEN(7), EIGHT(8), NINE(9), TEN(10), J(11), Q(12), K(13);
+		
+		private final int value;
+
+	    Face(int value) {
+	        this.value = value;
+	    }
+
+	    public int getValue() {
+	        return value;
+	    }
+	    
+		public boolean isAce() {
+			return value==1;
+		}
+
+		/**
+		 * Display string for the face used in toString()
+		 */
+		public String display() {
+			switch (this) {
+				case A: return "A";
+				case J: return "J";
+				case Q: return "Q";
+				case K: return "K";
+				case TEN: return "10";
+				default: return Integer.toString(value);
+			}
+		}
+	}
 }

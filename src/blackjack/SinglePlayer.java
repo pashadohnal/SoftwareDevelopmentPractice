@@ -3,26 +3,50 @@ package blackjack;
 import java.util.*;
 
 /**
- * Implementation of the Single Player Mode
- * You can also play against up to 6 bots
+ * SinglePlayer - Console-based single-player mode for a simplified Blackjack game.
+ *
+ * <p>This class contains a small, self-contained interactive driver for playing
+ * blackjack against a dealer and a configurable number of simple bots. It is
+ * intended as a lightweight UI for manual play and teaching/practice. The
+ * implementation is synchronous and console-driven (Scanner + System.out).
+ *
+ * <p>Notes and caveats:
+ * <ul>
+ *   <li>Many parts are simplified compared to a casino-grade blackjack engine
+ *       (simple bot strategy, no split/double/surrender handling, minimal
+ *       side-bet logic).</li>
+ *   <li>Some method and variable names may be legacy from earlier iterations;
+ *       the JavaDoc below attempts to document current behaviour rather than
+ *       older intent.</li>
+ *   <li>This class uses Thread.sleep for pacing the bot actions (catching and
+ *       ignoring InterruptedException). That behaviour is purely cosmetic.</li>
+ * </ul>
+ *
+ * <p>Public API: this class is a standalone driver (all methods are static).
  */
 public class SinglePlayer {
-	/**
-	 * Entry point for Single Player Mode
-	 * @param args
-	 */
+    /**
+     * Program entry point. Starts an interactive single-player blackjack session.
+     *
+     * <p>Behaviour: prompts for an initial balance, creates the dealer, human
+     * player and requested number of bots, then enters a loop of rounds until
+     * the user chooses to quit.
+     *
+     * @param args unused
+     */
     public static void main(String[] args) {
     	Scanner scanner = new Scanner(System.in);
-    	Decks decks = new Decks(4);
+    	Decks decks = new Decks(4, Card.genDeck());
+    	Dealer dealer = new Dealer(decks);
+    	int initBalance = askInitBalance(scanner);
+    	Player human = new Player(decks, initBalance);
     	
-    	Player dealer = new Player(decks, 0);
-    	ArrayList<Player> bots = setup(scanner, decks);
-    	Player human = bots.removeLast();
+    	ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
     	do {
     		reset(decks, dealer, human, bots);
     		initBet(scanner, human);
     		initPlayers(dealer, human, bots);
-    		sideBet(scanner, dealer);
+    		//sideBet(scanner, dealer);
     		while(round(scanner, dealer, human, bots)) {};
     		sidBetfinish(scanner, dealer);
     		updateBalance(dealer, human, bots);
@@ -32,34 +56,53 @@ public class SinglePlayer {
     }
     
     /**
-     * Generate an arraylist of bots and player. player is the last element
-     * @param scanner
-     * @param decks
-     * @return
+     * Prompt the user for the initial balance.
+     *
+     * This method repeatedly asks the user to input an integer until a valid
+     * integer is provided. It performs basic input validation and returns the
+     * chosen starting balance for the human player.
+     *
+     * @param scanner Scanner used to read user input (must not be null)
+     * @return the chosen initial balance as an int (guaranteed to be an integer)
      */
-    private static ArrayList<Player> setup(Scanner scanner, Decks decks) {
+    public static int askInitBalance(Scanner scanner) {
     	System.out.println("This is the single player mode for the game blackjack. It also allows you to play against bots");
-    	
-    	System.out.print("What should be the initial balance? Enter an integer: ");
-    	int initBalance = 0;
+		System.out.print("What should be the initial balance? Enter an integer: ");
+		int initBalance = 0;
     	while (true) {
-    		String input = scanner.nextLine().trim();
-    		try {
-    			initBalance = Integer.parseInt(input);
-    			break;
-    		} catch (NumberFormatException e) {
+			String input = scanner.nextLine().trim();
+			try {
+				initBalance = Integer.parseInt(input);
+				break;
+			} catch (NumberFormatException e) {
                 System.out.print("That was not an Integer. Enter an integer: ");
                 continue;
             }
     	}
-    	
+    	return initBalance;
+    }
+    
+    /**
+     * Create the requested number of bot players.
+     *
+     * <p>The user is prompted for the number of bots (0..6). Each bot is
+     * constructed with the provided deck and initial balance. The method
+     * returns a list of newly created bot players. The human player is not
+     * included here; the caller constructs it separately.
+     *
+     * @param scanner Scanner for reading user input
+     * @param initBalance starting balance to assign to each bot
+     * @param decks shared deck manager
+     * @return an ArrayList of bot Player instances (size between 0 and 6)
+     */
+    public static ArrayList<Player> makeBots(Scanner scanner, int initBalance , Decks decks) { 	
        	System.out.print("Ha Ha No Friends. How many bots you want to play with (at most 6 bots)? ");
        	int nPlayers;
     	while (true) {
-    		String input = scanner.nextLine().trim();
-    		try {
-    			nPlayers = Integer.parseInt(input);
-    		} catch (NumberFormatException e) {
+			String input = scanner.nextLine().trim();
+			try {
+				nPlayers = Integer.parseInt(input);
+			} catch (NumberFormatException e) {
                 System.out.print("Invalid input. Enter a number (0-6): ");
                 continue;
             }
@@ -72,15 +115,21 @@ public class SinglePlayer {
     	}
     	
     	ArrayList<Player> result = new ArrayList<>();
-    	for (int i=0; i<nPlayers; i++) {Player bot = new Player(decks, 100000);bot.betting(1000); result.add(bot);}
-    	result.add(new Player(decks, initBalance));
+    	for (int i=0; i<nPlayers; i++) {result.add(new Player(decks, initBalance));}
     	return result;
     }
     
     /**
-     * let human player and bots to put their initial bet
+     * Request initial bet from the human player.
+     *
+     * <p>If the player's account balance is zero or negative the method prints a
+     * message and returns. Otherwise it repeatedly prompts the user to enter a
+     * numeric bet until the Player.betting(bet) call succeeds.
+     *
+     * @param scanner Scanner for reading the user's bet
+     * @param human the human Player who will place the bet
      */
-    private static void initBet(Scanner scanner, Player human) { // can still play even <=0, having approach to solve but waiting for time implementing
+    public static void initBet(Scanner scanner, Player human) { // can still play even <=0, having approach to solve but waiting for time implementing
         if (human.getAccountBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
             return;
@@ -108,42 +157,62 @@ public class SinglePlayer {
     }
     
     /**
-     * Draw 2 cards for dealer, human player and bots
-     * @param human
-     * @param bots
+     * Deal two initial cards to dealer, human and bots.
+     *
+     * This performs the standard "deal two cards each" action. The Decks and
+     * Player.draw() implementations determine the exact card objects and side
+     * effects.
+     *
+     * @param dealer the dealer Player (will receive two cards)
+     * @param human the human Player (will receive two cards)
+     * @param bots list of bot players to deal two cards each
      */
-    private static void initPlayers(Player dealer, Player human, ArrayList<Player> bots) {
+    public static void initPlayers(Dealer dealer, Player human, ArrayList<Player> bots) {
     	for (int i=0; i<2; i++) {
-    		dealer.draw();
-    		human.draw();
-    		for (Player bot: bots) {bot.draw();}
-    	}
+			dealer.draw();
+			human.draw();
+			for (Player bot: bots) {bot.draw();}
+		}
     }
     
     /**
-     * let players to put side bet
-     * Optional Bets (After Cards Are Dealt):
-
-		Insurance: If the dealer shows an Ace, players may bet up to half their original wager that the dealer has blackjack.
-		
-		Double Down: After receiving the first two cards, the player can double their bet and receive exactly one more card.
-		
-		Split: If the first two cards are a pair, the player can split them into two hands, placing an additional bet equal to the original.
-		
-		Surrender (if allowed): Some casinos let players forfeit half their bet and end the hand immediately after the initial deal.
+     * Show side-bet options and reveal the dealer's visible card.
+     *
+     * Current implementation only prints the dealer's visible card. The
+     * JavaDoc lists common optional bets for reference; full support is not
+     * implemented here.
+     *
+     * @param scanner scanner for reading any additional input (unused)
+     * @param dealer the dealer player whose visible card is printed
      */
-    private static void sideBet(Scanner scanner, Player dealer) {
+    public static void sideBet(Scanner scanner, Dealer dealer) {
     	System.out.println(dealer.handToString(true));
     }
 
-	private static void sidBetfinish(Scanner scanner, Player dealer) {
+    /**
+     * Reveal the dealer's full hand after side-bet stage finishes.
+     *
+     * @param scanner scanner for any input (unused)
+     * @param dealer the dealer player to reveal
+     */
+	public static void sidBetfinish(Scanner scanner, Dealer dealer) {
 		System.out.println("Dealer's " + dealer.handToString(false));
 	}
     /**
-     * play 1 iteration of the game
-     * @return true if the game continue
+     * Play one round: player decisions, bots decisions, then dealer actions.
+     *
+     * <p>Return value is currently unused by the caller; the method always
+     * returns false at the end of the round (this mirrors the original code
+     * and allows the call-site to loop if the return value semantics are
+     * changed later).
+     *
+     * @param scanner scanner for reading human player's choices
+     * @param dealer dealer player
+     * @param human human player
+     * @param bots list of bot players
+     * @return false (method currently always returns false)
      */
-	private static boolean round(Scanner scanner, Player dealer, Player human, ArrayList<Player> bots) {
+	public static boolean round(Scanner scanner, Dealer dealer, Player human, ArrayList<Player> bots) {
 	    System.out.println("Player " + human.handToString(false));
 	    while (true) {
 	        System.out.print("(H)it or (S)tand : ");
@@ -206,39 +275,70 @@ public class SinglePlayer {
 	    return false;
 	}    
     /**
-     * reset the hands of dealer, player and bots, but not their balance
+     * Reset hands for the next round while preserving balances.
+     *
+     * <p>This calls Decks.reset(), Player.reset() for dealer, human and each bot.
+     * The decks manager will determine whether cards are reshuffled.
+     *
+     * @param decks shared deck manager to be reset
+     * @param dealer dealer player whose hand is cleared
+     * @param human human player whose hand is cleared
+     * @param bots list of bot players whose hands are cleared
      */
-    private static void reset(Decks decks, Player dealer, Player human, ArrayList<Player> bots) {
+    public static void reset(Decks decks, Dealer dealer, Player human, ArrayList<Player> bots) {
     	decks.reset();
     	dealer.reset();
         human.reset();
     	for (Player bot: bots) {bot.reset();}
     }
     
-    private static void updateBalance(Player dealer, Player human, ArrayList<Player> bots) {
+    /**
+     * Update players' balances based on the dealer's final value.
+     *
+     * <p>This delegates to each Player.updateBalance(int dealerValue).
+     * The precise settlement rules are implemented in the Player class and may
+     * include win/lose/push logic, blackjack payouts, and side-bet handling if
+     * present.
+     *
+     * @param dealer the dealer player whose final value is used for settlement
+     * @param human the human player to update
+     * @param bots list of bot players to update
+     */
+    public static void updateBalance(Dealer dealer, Player human, ArrayList<Player> bots) {
     	int value = dealer.getValue();
     	human.updateBalance(value);
-    	for (Player bot: bots) {bot.updateBalance(value);}
-    }
-    
-    private static void showBalance(Player human, ArrayList<Player> bots) {
-    	System.out.println("Player balance : " + human.getAccountBalance());
-    	for (int i=0; i<bots.size(); i++) {
-    		System.out.println("Bot " + i+1 +" balance : " + bots.get(i).getAccountBalance());
-    	}
+    	for (Player bot: bots) {bot.updateBalance(value);}    
     }
     
     /**
-     * ask if the player want to play next round
-     * @return true if player wants to continue, false otherwise
+     * Print account balances for human and bots to the console.
+     *
+     * @param human human player whose balance is printed
+     * @param bots list of bots whose balances are printed
      */
-    private static boolean nextRound(Scanner scanner) {
+    public static void showBalance(Player human, ArrayList<Player> bots) {
+    	System.out.println("Player balance : " + human.getAccountBalance());
+    	for (int i=0; i<bots.size(); i++) {
+			System.out.println("Bot " + i+1 +" balance : " + bots.get(i).getAccountBalance());
+		}
+    }
+    
+    /**
+     * Ask the user whether to continue playing another round.
+     *
+     * This method expects the user to type a single character: 'Y' to continue
+     * or 'N' to quit. The prompt loops until a valid choice is entered.
+     *
+     * @param scanner scanner used to read the user's reply
+     * @return true if the user entered 'Y', false if the user entered 'N'
+     */
+    public static boolean nextRound(Scanner scanner) {
     	System.out.print("Continue (Y/N)? ");
     	while (true) {
-    		char input = scanner.nextLine().charAt(0);
-    		if (input=='Y') {return true;}
-    		if (input=='N') {return false;}
-    		System.out.print("Invalid Input.");
-    	}
+			char input = scanner.nextLine().charAt(0);
+			if (input=='Y') {return true;}
+			if (input=='N') {return false;}
+			System.out.print("Invalid Input.");
+		}
     }
 }

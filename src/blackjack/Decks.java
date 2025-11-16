@@ -18,26 +18,12 @@ public class Decks {
 	private int index = 0;
 	
 	/**
-	 * @return a whole ordered poker deck
-	 */
-	private ArrayList<Card> genDeck() {
-		ArrayList<Card> cards = new ArrayList<>();
-		for (char suit : Arrays.asList('♠', '♥', '♦', '♣')) {
-			for (int face = 1; face <= 13; face++) {
-			    cards.add(new Card(suit, face));
-			}
-
-		}
-		return cards;
-	}
-	
-	/**
 	 * Constructor of the class
 	 * @param noOfDeckUsed
 	 */
-	public Decks(int noOfDeckUsed) {
+	public Decks(int noOfDeckUsed, ArrayList<Card> deck) {
 		for (int i=0; i<noOfDeckUsed; i++) {
-			cards.addAll(genDeck());
+			cards.addAll(deck);
 		}
 		reset();
 	}
@@ -51,6 +37,3 @@ public class Decks {
 		index =0;	
 	}
 }
-
-
-

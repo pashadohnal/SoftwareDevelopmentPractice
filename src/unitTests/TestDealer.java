@@ -43,8 +43,8 @@ public class TestDealer {
     	dealer.draw('7');
     	dealer.draw('8');
     	dealer.draw('2');
-    	dealer.play();
-    	dealer.play();
+    	dealer.autoDraw();
+    	dealer.autoDraw();
     	assertEquals(dealer.getValue(), 17);
     	assertEquals(3,dealer.getHand().size());
     }
@@ -53,7 +53,7 @@ public class TestDealer {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Bot dealer = new Bot();
-    	dealer.play();
+    	dealer.autoDraw();
     	assertTrue(dealer.getValue() > 17);
     	assertTrue(dealer.getValue() < 28);
     }
@@ -65,7 +65,7 @@ public class TestDealer {
     	dealer.draw('9');
     	dealer.draw('8');
     	dealer.draw('2');
-    	dealer.play();
+    	dealer.autoDraw();
         
         assertEquals(3, dealer.getHand().size());
     }
