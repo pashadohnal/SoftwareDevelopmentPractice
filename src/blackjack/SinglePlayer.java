@@ -36,26 +36,44 @@ public class SinglePlayer {
      */
     public static void main(String[] args) {
     	Scanner scanner = new Scanner(System.in);
-    	Decks decks = new Decks(4, Card.genDeck());
-    	Dealer dealer = new Dealer(decks);
-    	int initBalance = askInitBalance(scanner);
-    	Player human = new Player(decks, initBalance);
-    	
-    	ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
+    	System.out.println("This is the single player mode for the game blackjack. It also allows you to play against bots");
     	do {
+    		Decks decks = new Decks(4, Card.genDeck());
+        	Dealer dealer = new Dealer(decks);
+        	int initBalance = askInitBalance(scanner);
+        	Player human = new Player(decks, initBalance);
+        	
+        	ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
     		reset(decks, dealer, human, bots);
     		initBet(scanner, human);
     		initPlayers(dealer, human, bots);
-    		//sideBet(scanner, dealer);
+    		sideBet(scanner, dealer);
     		while(round(scanner, dealer, human, bots)) {};
     		sidBetfinish(scanner, dealer);
     		updateBalance(dealer, human, bots);
     		showBalance(human, bots);
+    		determine(human, scanner);
     	} while(nextRound(scanner));
     	
     }
     
-    /**
+    private static void determine(Player human, Scanner scanner) {
+        if (human.getAccountBalance() <= 0) {
+            System.out.println("You have lost all your money.");
+        }
+        System.out.print("Please enter Y or N for continue: ");
+        String input = scanner.nextLine().trim().toUpperCase();
+		if (input.equals("N")){
+			System.out.println("Thank you for playing! Goodbye.");
+			System.exit(0);
+		}
+		else if (input.equals("Y")){
+			System.out.println("Great! Let's continue playing.");
+		}
+    }
+
+    
+	/**
      * Prompt the user for the initial balance.
      *
      * This method repeatedly asks the user to input an integer until a valid
@@ -66,7 +84,6 @@ public class SinglePlayer {
      * @return the chosen initial balance as an int (guaranteed to be an integer)
      */
     public static int askInitBalance(Scanner scanner) {
-    	System.out.println("This is the single player mode for the game blackjack. It also allows you to play against bots");
 		System.out.print("What should be the initial balance? Enter an integer: ");
 		int initBalance = 0;
     	while (true) {
@@ -212,21 +229,30 @@ public class SinglePlayer {
      * @param bots list of bot players
      * @return false (method currently always returns false)
      */
-	public static boolean round(Scanner scanner, Dealer dealer, Player human, ArrayList<Player> bots) {
-	    System.out.println("Player " + human.handToString(false));
+	public static boolean round(Scanner scanner, Dealer dealer,
+        Player human, ArrayList<Player> bots) {
+		playerTurn(scanner, human, "Player");
+		playAllBots(bots);
+		dealerTurn(dealer);	
+		return false;
+}
+	private static void playerTurn(Scanner scanner, Player player, String name) {
+	    System.out.println(name + " " + player.handToString(false));
+
 	    while (true) {
 	        System.out.print("(H)it or (S)tand : ");
-	        String input = scanner.nextLine().trim().toUpperCase();
-	        if (input.isEmpty()) {
+	        String line = scanner.nextLine().trim().toUpperCase();
+	        if (line.isEmpty()) {
 	            System.out.println("Invalid input. Please type H or S.");
 	            continue;
 	        }
-	        char choice = input.charAt(0);
+	        char choice = line.charAt(0);
+
 	        if (choice == 'H') {
-	            human.draw();
-	            System.out.println("Player " + human.handToString(false));
-	            if (human.getValue() > 21) {
-	                System.out.println("Player busts!");
+	            player.draw();
+	            System.out.println(name + " " + player.handToString(false));
+	            if (player.getValue() > 21) {
+	                System.out.println(name + " busts!");
 	                break;
 	            }
 	        } else if (choice == 'S') {
@@ -235,45 +261,50 @@ public class SinglePlayer {
 	            System.out.println("Invalid input. Please type H or S.");
 	        }
 	    }
-	    for (int i = 0; i < bots.size(); i++) {
-	        Player bot = bots.get(i);
-	        System.out.println("Bot " + (i + 1) + " " + bot.handToString(false));
+	}
 
-	        while (true) {
-	            System.out.print("Bot " + (i + 1) + " (H)it or (S)tand? ");
-	            boolean hit = bot.getValue() < 17;
+	private static void botTurn(Player bot, int botIndex) {
+	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
 
-	            if (hit) {
-	                System.out.println("H");
-	                bot.draw();
-	                System.out.println("Bot " + (i + 1) + " hits: " + bot.handToString(false));
-	                if (bot.getValue() > 21) {
-	                    System.out.println("Bot " + (i + 1) + " busts!");
-	                    break;
-	                }
-	            } else {
-	                System.out.println("S");
-	                System.out.println("Bot " + (i + 1) + " stands.");
+	    while (true) {
+	        boolean hit = bot.getValue() < 17;
+	        System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
+	        if (hit) {
+	            System.out.println("H");
+	            bot.draw();
+	            System.out.println("Bot " + (botIndex + 1) + " hits: " + bot.handToString(false));
+	            if (bot.getValue() > 21) {
+	                System.out.println("Bot " + (botIndex + 1) + " busts!");
 	                break;
 	            }
-	            try { Thread.sleep(600); } catch (Exception e) {}  // readable pace
+	        } else {
+	            System.out.println("S");
+	            System.out.println("Bot " + (botIndex + 1) + " stands.");
+	            break;
 	        }
+	        try { Thread.sleep(600); } catch (Exception ignored) {}
 	    }
-	    System.out.println("Dealer's " + dealer.handToString(false));  // Reveal both cards
+	}
+	private static void playAllBots(ArrayList<Player> bots) {
+	    for (int i = 0; i < bots.size(); i++) {
+	        botTurn(bots.get(i), i);
+	    }
+	}
+	private static void dealerTurn(Dealer dealer) {
+	    System.out.println("Dealer's " + dealer.handToString(false)); // reveal both
+
 	    while (dealer.getValue() < 17) {
 	        dealer.draw();
 	        System.out.println("Dealer hits: " + dealer.handToString(false));
 	        if (dealer.getValue() > 21) {
 	            System.out.println("Dealer busts!");
-	            break;
+	            return;                 // early exit – no need to stand
 	        }
 	    }
-	    if (dealer.getValue() >= 17 && dealer.getValue() <=21) {
+	    if (dealer.getValue() >= 17 && dealer.getValue() <= 21) {
 	        System.out.println("Dealer stands.");
 	    }
-
-	    return false;
-	}    
+	}
     /**
      * Reset hands for the next round while preserving balances.
      *
@@ -337,7 +368,7 @@ public class SinglePlayer {
     	while (true) {
 			char input = scanner.nextLine().charAt(0);
 			if (input=='Y') {return true;}
-			if (input=='N') {return false;}
+			if (input=='N') {System.out.println("Goodbye");return false;}
 			System.out.print("Invalid Input.");
 		}
     }
