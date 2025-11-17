@@ -34,44 +34,54 @@ public class SinglePlayer {
      *
      * @param args unused
      */
-    public static void main(String[] args) {
-    	Scanner scanner = new Scanner(System.in);
-    	System.out.println("This is the single player mode for the game blackjack. It also allows you to play against bots");
-    	do {
-    		Decks decks = new Decks(4, Card.genDeck());
-        	Dealer dealer = new Dealer(decks);
-        	int initBalance = askInitBalance(scanner);
-        	Player human = new Player(decks, initBalance);
-        	
-        	ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
-    		reset(decks, dealer, human, bots);
-    		initBet(scanner, human);
-    		initPlayers(dealer, human, bots);
-    		sideBet(scanner, dealer);
-    		while(round(scanner, dealer, human, bots)) {};
-    		sidBetfinish(scanner, dealer);
-    		updateBalance(dealer, human, bots);
-    		showBalance(human, bots);
-    		determine(human, scanner);
-    	} while(nextRound(scanner));
-    	
-    }
-    
-    private static void determine(Player human, Scanner scanner) {
-        if (human.getAccountBalance() <= 0) {
-            System.out.println("You have lost all your money.");
-        }
-        System.out.print("Please enter Y or N for continue: ");
-        String input = scanner.nextLine().trim().toUpperCase();
-		if (input.equals("N")){
-			System.out.println("Thank you for playing! Goodbye.");
-			System.exit(0);
-		}
-		else if (input.equals("Y")){
-			System.out.println("Great! Let's continue playing.");
-		}
-    }
+	public static void main(String[] args) {
+	    Scanner scanner = new Scanner(System.in);
+	    System.out.println("This is the single player mode for the game blackjack. It also allows you to play against bots");
+	    while (true) {
+	        int initBalance = askInitBalance(scanner);
+	        Decks decks = new Decks(4, Card.genDeck());
+	        Dealer dealer = new Dealer(decks);
+	        Player human = new Player(decks, initBalance);
+	        ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
+	        boolean playMoreRounds = true;
+	        while (playMoreRounds) {
+	            reset(decks, dealer, human, bots);
+	            initBet(scanner, human);
+	            if (human.getAccountBalance() <= 0) {
+	                System.out.println("You have no money left for another round.");
+	                break;
+	            }
+	            initPlayers(dealer, human, bots);
+	            sideBet(scanner, dealer);
+	            while (round(scanner, dealer, human, bots)) {}
+	            sidBetfinish(scanner, dealer);
+	            updateBalance(dealer, human, bots);
+	            showBalance(human, bots);
+	            playMoreRounds = nextRound(scanner); 
+	        }
+	        System.out.println();
+	        if (!wantsGame(scanner)) {
+	            scanner.close();
+	            return;                              
+	        }
+	    }
+	}
+	private static boolean wantsGame(Scanner scanner) {
+	    while (true) {
+	        System.out.print("Start a completely new game? (Y/N): ");
+	        String input = scanner.nextLine().trim().toUpperCase();
 
+	        if (input.equals("Y")) {
+	            System.out.println("Starting a completely new game with fresh balance...");
+	            return true;
+	        }
+	        if (input.equals("N")) {
+	            System.out.println("Thank you for playing! Goodbye.");
+	            return false;
+	        }
+	        System.out.println("Invalid input. Please type Y or N.");
+	    }
+	}
     
 	/**
      * Prompt the user for the initial balance.
@@ -146,33 +156,44 @@ public class SinglePlayer {
      * @param scanner Scanner for reading the user's bet
      * @param human the human Player who will place the bet
      */
-    public static void initBet(Scanner scanner, Player human) { // can still play even <=0, having approach to solve but waiting for time implementing
+    public static void initBet(Scanner scanner, Player human) {
         if (human.getAccountBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
             return;
         }
-
-        int bet = 0;
-        System.out.print("Your account has $" + human.getAccountBalance() + ". ");
-
+        int balance = human.getAccountBalance();
+        System.out.println("Your current balance: $" + balance);
         while (true) {
-            System.out.print("Please place your bet : ");
+            System.out.print("How much do you want to bet? (1–" + balance + "): ");
             String input = scanner.nextLine().trim();
 
+            if (input.isEmpty()) {
+                System.out.println("Please enter a bet amount.");
+                continue;
+            }
+            int bet;
             try {
                 bet = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("Please enter a valid number.");
+                continue;
+            }
+            if (bet <= 0) {
+                System.out.println("Bet must be at least $1.");
+                continue;
+            }
+            if (bet > balance) {
+                System.out.println("You don't have enough money. Maximum bet: $" + balance);
                 continue;
             }
             if (human.betting(bet)) {
-                break;
+                System.out.println("Bet accepted: $" + bet);
+                return;
             } else {
-                System.out.println("Not enough money. Try again.");
+                System.out.println("Bet failed. Please try again.");
             }
         }
     }
-    
     /**
      * Deal two initial cards to dealer, human and bots.
      *
@@ -340,7 +361,6 @@ public class SinglePlayer {
     	human.updateBalance(value);
     	for (Player bot: bots) {bot.updateBalance(value);}    
     }
-    
     /**
      * Print account balances for human and bots to the console.
      *
@@ -353,7 +373,6 @@ public class SinglePlayer {
 			System.out.println("Bot " + i+1 +" balance : " + bots.get(i).getAccountBalance());
 		}
     }
-    
     /**
      * Ask the user whether to continue playing another round.
      *
@@ -363,13 +382,17 @@ public class SinglePlayer {
      * @param scanner scanner used to read the user's reply
      * @return true if the user entered 'Y', false if the user entered 'N'
      */
-    public static boolean nextRound(Scanner scanner) {
-    	System.out.print("Continue (Y/N)? ");
-    	while (true) {
-			char input = scanner.nextLine().charAt(0);
-			if (input=='Y') {return true;}
-			if (input=='N') {System.out.println("Goodbye");return false;}
-			System.out.print("Invalid Input.");
-		}
+    private static boolean nextRound(Scanner scanner) {
+        while (true) {
+            System.out.print("Play another round? (Y/N): ");
+            String input = scanner.nextLine().trim().toUpperCase();
+            if (input.equals("Y")) {
+                return true;
+            }
+            if (input.equals("N")) {
+                return false;              
+            }
+            System.out.println("Invalid input. Please type Y or N.");
+        }
     }
 }
