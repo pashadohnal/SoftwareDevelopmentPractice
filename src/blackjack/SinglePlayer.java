@@ -53,7 +53,9 @@ public class SinglePlayer {
 	            }
 	            initPlayers(dealer, human, bots);
 	            sideBet(scanner, dealer);
-	            while (round(scanner, dealer, human, bots)) {}
+	            playerTurn(scanner, human, "Player");
+	    		playAllBots(bots);
+	    		dealerTurn(dealer);	
 	            sidBetfinish(scanner, dealer);
 	            updateBalance(dealer, human, bots);
 	            showBalance(human, bots);
@@ -250,13 +252,8 @@ public class SinglePlayer {
      * @param bots list of bot players
      * @return false (method currently always returns false)
      */
-	public static boolean round(Scanner scanner, Dealer dealer,
-        Player human, ArrayList<Player> bots) {
-		playerTurn(scanner, human, "Player");
-		playAllBots(bots);
-		dealerTurn(dealer);	
-		return false;
-}
+
+
 	private static void playerTurn(Scanner scanner, Player player, String name) {
 	    System.out.println(name + " " + player.handToString(false));
 
@@ -283,10 +280,8 @@ public class SinglePlayer {
 	        }
 	    }
 	}
-
 	private static void botTurn(Player bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
-
 	    while (true) {
 	        boolean hit = bot.getValue() < 17;
 	        System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
@@ -312,8 +307,7 @@ public class SinglePlayer {
 	    }
 	}
 	private static void dealerTurn(Dealer dealer) {
-	    System.out.println("Dealer's " + dealer.handToString(false)); // reveal both
-
+	    System.out.println("Dealer's " + dealer.handToString(false));
 	    while (dealer.getValue() < 17) {
 	        dealer.draw();
 	        System.out.println("Dealer hits: " + dealer.handToString(false));
@@ -361,6 +355,7 @@ public class SinglePlayer {
     	human.updateBalance(value);
     	for (Player bot: bots) {bot.updateBalance(value);}    
     }
+    
     /**
      * Print account balances for human and bots to the console.
      *
@@ -370,9 +365,10 @@ public class SinglePlayer {
     public static void showBalance(Player human, ArrayList<Player> bots) {
     	System.out.println("Player balance : " + human.getAccountBalance());
     	for (int i=0; i<bots.size(); i++) {
-			System.out.println("Bot " + i+1 +" balance : " + bots.get(i).getAccountBalance());
+			System.out.println("Bot " + (i+1) +" balance : " + bots.get(i).getAccountBalance());
 		}
     }
+    
     /**
      * Ask the user whether to continue playing another round.
      *
@@ -386,6 +382,7 @@ public class SinglePlayer {
         while (true) {
             System.out.print("Play another round? (Y/N): ");
             String input = scanner.nextLine().trim().toUpperCase();
+
             if (input.equals("Y")) {
                 return true;
             }
