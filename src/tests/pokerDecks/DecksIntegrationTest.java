@@ -1,16 +1,16 @@
-package integrationTests;
+package pokerDecks;
 
 import org.junit.jupiter.api.Test;
 
-import blackjack.Card;
-import blackjack.Decks;
+import pokerDecks.Card;
+import pokerDecks.Decks;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestDecks {
+public class DecksIntegrationTest {
 
     @Test
     public void testSingleDeckUniqueness() {

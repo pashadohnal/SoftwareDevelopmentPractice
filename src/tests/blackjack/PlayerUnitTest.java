@@ -1,13 +1,14 @@
-package unitTests;
+package blackjack;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import blackjack.*;
+import gameModes.Local;
+import pokerDecks.Decks;
 
-public class TestPlayer {
+public class PlayerUnitTest {
 	
     @Test
     public void testDraw() {
@@ -15,7 +16,7 @@ public class TestPlayer {
     	ArrayList<Character> cards = Decks.getDeck();
     	Player player = new Player();
     	player.draw();
-    	assertEquals(player.getValue(), SinglePlayer.valueOf(0, cards.get(0)));
+    	assertEquals(player.getValue(), Local.valueOf(0, cards.get(0)));
     }
 
 }

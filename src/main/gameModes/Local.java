@@ -1,6 +1,11 @@
-package blackjack;
+package gameModes;
 
 import java.util.*;
+
+import blackjack.Dealer;
+import blackjack.Player;
+import pokerDecks.Card;
+import pokerDecks.Decks;
 
 /**
  * SinglePlayer - Console-based single-player mode for a simplified Blackjack game.
@@ -24,7 +29,7 @@ import java.util.*;
  *
  * <p>Public API: this class is a standalone driver (all methods are static).
  */
-public class SinglePlayer {
+public class Local {
     /**
      * Program entry point. Starts an interactive single-player blackjack session.
      *
@@ -209,7 +214,7 @@ public class SinglePlayer {
      */
     public static void initPlayers(Dealer dealer, Player human, ArrayList<Player> bots) {
     	for (int i=0; i<2; i++) {
-			dealer.draw();
+			dealer.drawCard();
 			human.draw();
 			for (Player bot: bots) {bot.draw();}
 		}
@@ -309,7 +314,7 @@ public class SinglePlayer {
 	private static void dealerTurn(Dealer dealer) {
 	    System.out.println("Dealer's " + dealer.handToString(false));
 	    while (dealer.getValue() < 17) {
-	        dealer.draw();
+	        dealer.drawCard();
 	        System.out.println("Dealer hits: " + dealer.handToString(false));
 	        if (dealer.getValue() > 21) {
 	            System.out.println("Dealer busts!");

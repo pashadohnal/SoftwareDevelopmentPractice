@@ -1,28 +1,29 @@
-package unitTests;
+package blackjack;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import blackjack.*;
+import gameModes.Local;
+import pokerDecks.Decks;
 
-public class TestDealer {
+public class DealerUnitTest {
     @Test
     public void testDraw2() {
     	Decks decks = new Decks(); 
     	ArrayList<Character> cards = Decks.getDeck();
     	Bot dealer = new Bot();
-    	dealer.draw();
-    	assertEquals(dealer.getValue(), SinglePlayer.valueOf(0, cards.get(0)));
+    	dealer.drawCard();
+    	assertEquals(dealer.getValue(), Local.valueOf(0, cards.get(0)));
     }
     @Test
     public void testDraw3() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Bot dealer = new Bot();
-    	dealer.draw();
-    	assertEquals(dealer.getValue(), SinglePlayer.valueOf(0, cards.get(0)));
+    	dealer.drawCard();
+    	assertEquals(dealer.getValue(), Local.valueOf(0, cards.get(0)));
     	dealer.reset();
     	assertEquals(dealer.getValue(), 0);
     }
@@ -31,18 +32,18 @@ public class TestDealer {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Bot dealer = new Bot();
-    	dealer.draw();
-    	dealer.draw();
-    	assertEquals(dealer.getValue(), SinglePlayer.valueOf(0, cards.get(0)) + SinglePlayer.valueOf(SinglePlayer.valueOf(0, cards.get(0)), cards.get(1)));
+    	dealer.drawCard();
+    	dealer.drawCard();
+    	assertEquals(dealer.getValue(), Local.valueOf(0, cards.get(0)) + Local.valueOf(Local.valueOf(0, cards.get(0)), cards.get(1)));
     }
     @Test
     public void testDraw5() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Bot dealer = new Bot();
-    	dealer.draw('7');
-    	dealer.draw('8');
-    	dealer.draw('2');
+    	dealer.drawCard('7');
+    	dealer.drawCard('8');
+    	dealer.drawCard('2');
     	dealer.autoDraw();
     	dealer.autoDraw();
     	assertEquals(dealer.getValue(), 17);
@@ -62,9 +63,9 @@ public class TestDealer {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
     	Bot dealer = new Bot();
-    	dealer.draw('9');
-    	dealer.draw('8');
-    	dealer.draw('2');
+    	dealer.drawCard('9');
+    	dealer.drawCard('8');
+    	dealer.drawCard('2');
     	dealer.autoDraw();
         
         assertEquals(3, dealer.getHand().size());

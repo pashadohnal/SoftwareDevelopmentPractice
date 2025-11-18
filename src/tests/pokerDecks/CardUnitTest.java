@@ -1,12 +1,12 @@
-package unitTests;
+package pokerDecks;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import blackjack.Card;
+import pokerDecks.Card;
 
-public class TestCard {
+public class CardUnitTest {
 
     @Test
     public void testNumberCardValueAndToString() {
