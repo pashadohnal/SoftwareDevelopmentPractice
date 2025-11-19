@@ -6,5 +6,10 @@ public class DrawStrategy {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public boolean drawCard() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
