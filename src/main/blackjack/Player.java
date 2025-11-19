@@ -40,6 +40,10 @@ public class Player {
 	}
 	
 	public boolean drawCard() {
+		if(playCard.gethandsize()<2) {
+			playCard.drawCard();
+			return true;
+		}
 		boolean draw = drawStrategy.drawCard();
 		if (draw) playCard.drawCard();
 		return draw;
@@ -67,3 +71,4 @@ public class Player {
 		return gambling.getBalance();
 	}
 }
+
