@@ -14,7 +14,7 @@ public class PlayerUnitTest {
     public void testDraw() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Player player = new Player();
+    	User player = new User();
     	player.draw();
     	assertEquals(player.getValue(), Local.valueOf(0, cards.get(0)));
     }

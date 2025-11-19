@@ -6,13 +6,13 @@ import blackjack.traits.*;
 
 import java.util.Scanner;
 
-public class Player {
+public class User {
 	private PlayCard playCard;
 	private Gambling gambling;
 	private AskPlayerDraw drawStrategy;
 	private AskPlayerBet betStrategy;
 	
-	public Player(Decks decks, int initialBalance, Scanner scanner) {
+	public User(Decks decks, int initialBalance, Scanner scanner) {
 		this.playCard = new PlayCard(decks);
 		this.gambling = new Gambling(initialBalance);
 		this.drawStrategy = new AskPlayerDraw(scanner);

@@ -79,8 +79,8 @@ public class Bot {
 	    ));
 
 	    List<BetStrategy> betStrategies = new ArrayList<>(List.of(
-	        new blackjack.strategies.Bn(10),
-	        new blackjack.strategies.Bn(10),
+	        new Bn(10),
+	        new Bn(10),
 	        new blackjack.strategies.Bn(15),
 	        new blackjack.strategies.Bn(15),
 	        new blackjack.strategies.Bn(20),
