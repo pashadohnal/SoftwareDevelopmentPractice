@@ -293,21 +293,23 @@ public class Local {
 	private static void botTurn(Bot bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
 
-	    while (bot.getValue() < 17) {                
+	    while (true) {
+	        boolean shouldHit = bot.drawCard(); 
 	        System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
-	        System.out.println("H");
-	        bot.drawCard();
-	        System.out.println("Bot " + (botIndex + 1) + " hits: " + bot.handToString(false));
-
-	        if (bot.getValue() > 21) {
-	            System.out.println("Bot " + (botIndex + 1) + " busts!");
-	            return;                               // bust → leave immediately
+	        if (shouldHit) {
+	            System.out.println("H");
+	            System.out.println("Bot " + (botIndex + 1) + " hits: " + bot.handToString(false));
+	            if (bot.getValue() > 21) {
+	                System.out.println("Bot " + (botIndex + 1) + " busts!");
+	                return;
+	            }
+	        } else {
+	            System.out.println("S");
+	            System.out.println("Bot " + (botIndex + 1) + " stands.");
+	            return;
 	        }
 	        try { Thread.sleep(600); } catch (Exception ignored) {}
 	    }
-	    System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
-	    System.out.println("S");
-	    System.out.println("Bot " + (botIndex + 1) + " stands.");
 	}
 	private static void playAllBots(ArrayList<Bot> bots) {
 	    for (int i = 0; i < bots.size(); i++) {
