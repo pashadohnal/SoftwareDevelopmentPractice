@@ -56,6 +56,18 @@ public class Bot {
 		playCard.reset();
 	}
 	
+	public String handToString(boolean hide) {
+		return playCard.handToString(hide);
+	}
+	
+	public int getValue() {
+		return playCard.getValue();
+	}
+	
+	public int getBalance() {
+		return gambling.getBalance();
+	}
+	
 	public static List<Bot> makeBots(Decks decks, int initialBalance, int numberOfBots) {
 		List<DrawStrategy> drawStrategies = List.of(
 			new blackjack.strategies.Dn(18),

@@ -54,4 +54,16 @@ public class Player {
 	public void reset() {
 		playCard.reset();
 	}
+	
+	public String handToString(boolean hide) {
+		return playCard.handToString(hide);
+	}
+	
+	public int getValue() {
+		return playCard.getValue();
+	}
+	
+	public int getBalance() {
+		return gambling.getBalance();
+	}
 }
