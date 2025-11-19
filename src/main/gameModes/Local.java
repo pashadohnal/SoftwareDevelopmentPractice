@@ -53,11 +53,11 @@ public class Local {
 	        boolean playMoreRounds = true;
 	        while (playMoreRounds) {
 	            reset(decks, dealer, human, bots);
-	            initBet(scanner, human, bots);
-	            if (human.getBalance() <= 0) {
+				if (human.getBalance() <= 0) {
 	                System.out.println("You have no money left for another round.");
 	                break;
 	            }
+	            initBet(scanner, human, bots);
 	            initPlayers(dealer, human, bots);
 	            sideBet(scanner, dealer);
 	            playerTurn(scanner, human, "Player");
