@@ -53,7 +53,7 @@ public class Local {
 	        boolean playMoreRounds = true;
 	        while (playMoreRounds) {
 	            reset(decks, dealer, human, bots);
-	            initBet(scanner, human);
+	            initBet(scanner, human, bots);
 	            if (human.getBalance() <= 0) {
 	                System.out.println("You have no money left for another round.");
 	                break;
@@ -150,7 +150,7 @@ public class Local {
             }
     	}
     	
-    	return Bot.makeBots(decks, initBalance, nPlayers);
+    	return (ArrayList<Bot>) Bot.makeBots(decks, initBalance, nPlayers);
     }
     
     /**
@@ -163,7 +163,7 @@ public class Local {
      * @param scanner Scanner for reading the user's bet
      * @param human the human Player who will place the bet
      */
-    public static void initBet(Scanner scanner, Player human) {
+    public static void initBet(Scanner scanner, Player human, ArrayList<Bot> bots) {
     	/*
         if (human.getBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
@@ -202,7 +202,9 @@ public class Local {
             }
         }
         */
+
     	human.placeBet();
+    	for (Bot bot: bots) {bot.placeBet();}
     }
     /**
      * Deal two initial cards to dealer, human and bots.
@@ -290,24 +292,22 @@ public class Local {
 	}
 	private static void botTurn(Bot bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
-	    while (true) {
-	        boolean hit = bot.getValue() < 17;
+
+	    while (bot.getValue() < 17) {                
 	        System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
-	        if (hit) {
-	            System.out.println("H");
-	            bot.drawCard();
-	            System.out.println("Bot " + (botIndex + 1) + " hits: " + bot.handToString(false));
-	            if (bot.getValue() > 21) {
-	                System.out.println("Bot " + (botIndex + 1) + " busts!");
-	                break;
-	            }
-	        } else {
-	            System.out.println("S");
-	            System.out.println("Bot " + (botIndex + 1) + " stands.");
-	            break;
+	        System.out.println("H");
+	        bot.drawCard();
+	        System.out.println("Bot " + (botIndex + 1) + " hits: " + bot.handToString(false));
+
+	        if (bot.getValue() > 21) {
+	            System.out.println("Bot " + (botIndex + 1) + " busts!");
+	            return;                               // bust → leave immediately
 	        }
 	        try { Thread.sleep(600); } catch (Exception ignored) {}
 	    }
+	    System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
+	    System.out.println("S");
+	    System.out.println("Bot " + (botIndex + 1) + " stands.");
 	}
 	private static void playAllBots(ArrayList<Bot> bots) {
 	    for (int i = 0; i < bots.size(); i++) {
