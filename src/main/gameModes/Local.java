@@ -2,6 +2,7 @@ package gameModes;
 
 import java.util.*;
 
+import blackjack.Bot;
 import blackjack.Dealer;
 import blackjack.Player;
 import pokerDecks.Card;
@@ -48,7 +49,7 @@ public class Local {
 	        Decks decks = new Decks(4, Card.genDeck());
 	        Dealer dealer = new Dealer(decks);
 	        Player human = new Player(decks, initBalance,scanner);
-	        ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
+	        ArrayList<Bot> bots = makeBots(scanner, initBalance, decks);
 	        boolean playMoreRounds = true;
 	        while (playMoreRounds) {
 	            reset(decks, dealer, human, bots);
@@ -130,7 +131,7 @@ public class Local {
      * @param decks shared deck manager
      * @return an ArrayList of bot Player instances (size between 0 and 6)
      */
-    public static ArrayList<Player> makeBots(Scanner scanner, int initBalance , Decks decks) { 	
+    public static ArrayList<Bot> makeBots(Scanner scanner, int initBalance , Decks decks) { 	
        	System.out.print("Ha Ha No Friends. How many bots you want to play with (at most 6 bots)? ");
        	int nPlayers;
     	while (true) {
@@ -149,9 +150,7 @@ public class Local {
             }
     	}
     	
-    	ArrayList<Player> result = new ArrayList<>();
-    	for (int i=0; i<nPlayers; i++) {result.add(new Player(decks, initBalance));}
-    	return result;
+    	return Bot.makeBots(decks, initBalance, nPlayers);
     }
     
     /**
@@ -165,6 +164,7 @@ public class Local {
      * @param human the human Player who will place the bet
      */
     public static void initBet(Scanner scanner, Player human) {
+    	/*
         if (human.getBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
             return;
@@ -201,6 +201,8 @@ public class Local {
                 System.out.println("Bet failed. Please try again.");
             }
         }
+        */
+    	human.placeBet();
     }
     /**
      * Deal two initial cards to dealer, human and bots.
@@ -213,11 +215,11 @@ public class Local {
      * @param human the human Player (will receive two cards)
      * @param bots list of bot players to deal two cards each
      */
-    public static void initPlayers(Dealer dealer, Player human, ArrayList<Player> bots) {
+    public static void initPlayers(Dealer dealer, Player human, ArrayList<Bot> bots) {
     	for (int i=0; i<2; i++) {
 			dealer.drawCard();
 			human.drawCard();
-			for (Player bot: bots) {bot.drawCard();}
+			for (Bot bot: bots) {bot.drawCard();}
 		}
     }
     
@@ -286,7 +288,7 @@ public class Local {
 	        }
 	    }
 	}
-	private static void botTurn(Player bot, int botIndex) {
+	private static void botTurn(Bot bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
 	    while (true) {
 	        boolean hit = bot.getValue() < 17;
@@ -307,7 +309,7 @@ public class Local {
 	        try { Thread.sleep(600); } catch (Exception ignored) {}
 	    }
 	}
-	private static void playAllBots(ArrayList<Player> bots) {
+	private static void playAllBots(ArrayList<Bot> bots) {
 	    for (int i = 0; i < bots.size(); i++) {
 	        botTurn(bots.get(i), i);
 	    }
@@ -337,11 +339,11 @@ public class Local {
      * @param human human player whose hand is cleared
      * @param bots list of bot players whose hands are cleared
      */
-    public static void reset(Decks decks, Dealer dealer, Player human, ArrayList<Player> bots) {
+    public static void reset(Decks decks, Dealer dealer, Player human, ArrayList<Bot> bots) {
     	decks.reset();
     	dealer.reset();
         human.reset();
-    	for (Player bot: bots) {bot.reset();}
+    	for (Bot bot: bots) {bot.reset();}
     }
     
     /**
@@ -356,10 +358,10 @@ public class Local {
      * @param human the human player to update
      * @param bots list of bot players to update
      */
-    public static void updateBalance(Dealer dealer, Player human, ArrayList<Player> bots) {
+    public static void updateBalance(Dealer dealer, Player human, ArrayList<Bot> bots) {
     	int value = dealer.getValue();
     	human.updateBalance(value);
-    	for (Player bot: bots) {bot.updateBalance(value);}    
+    	for (Bot bot: bots) {bot.updateBalance(value);}    
     }
     
     /**
@@ -368,7 +370,7 @@ public class Local {
      * @param human human player whose balance is printed
      * @param bots list of bots whose balances are printed
      */
-    public static void showBalance(Player human, ArrayList<Player> bots) {
+    public static void showBalance(Player human, ArrayList<Bot> bots) {
     	System.out.println("Player balance : " + human.getBalance());
     	for (int i=0; i<bots.size(); i++) {
 			System.out.println("Bot " + (i+1) +" balance : " + bots.get(i).getBalance());

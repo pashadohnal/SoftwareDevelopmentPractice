@@ -4,7 +4,6 @@ import pokerDecks.*;
 import blackjack.strategies.*;
 import blackjack.traits.*;
 
-import java.util.List;
 import java.util.*;
 
 public class Bot {
@@ -68,7 +67,7 @@ public class Bot {
 		return gambling.getBalance();
 	}
 	
-	public static List<Bot> makeBots(Decks decks, int initialBalance, int numberOfBots) {
+	public static ArrayList<Bot> makeBots(Decks decks, int initialBalance, int numberOfBots) {
 		List<DrawStrategy> drawStrategies = List.of(
 			new blackjack.strategies.Dn(18),
 			new blackjack.strategies.Dn(18),
@@ -91,10 +90,11 @@ public class Bot {
 		
 		Collections.shuffle(betStrategies);
 		
-		List<Bot> bots = new ArrayList<>();
+		ArrayList<Bot> bots = new ArrayList<>();
 		
 		for (int i=0; i<numberOfBots; i++) {
 			Bot bot = new Bot(decks, initialBalance, drawStrategies.get(i%drawStrategies.size()), betStrategies.get(i%betStrategies.size()));
+			//bots.
 			bots.add(bot);
 		}
 		
