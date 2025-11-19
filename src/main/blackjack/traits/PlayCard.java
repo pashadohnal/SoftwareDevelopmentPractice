@@ -12,7 +12,9 @@ public class PlayCard {
 	public PlayCard(Decks decks) {
 		this.decks = decks;
 	}
-	
+	public int gethandsize() {
+		 return hand.size();
+	}
 	public void drawCard() {
 		Card card = decks.draw();
 		hand.add(card);
