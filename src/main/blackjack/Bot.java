@@ -66,38 +66,39 @@ public class Bot {
 	public int getBalance() {
 		return gambling.getBalance();
 	}
-	
+
 	public static ArrayList<Bot> makeBots(Decks decks, int initialBalance, int numberOfBots) {
-		List<DrawStrategy> drawStrategies = List.of(
-			new blackjack.strategies.Dn(18),
-			new blackjack.strategies.Dn(18),
-			new blackjack.strategies.Dn(17),
-			new blackjack.strategies.Dn(17),
-			new blackjack.strategies.Dn(16),
-			new blackjack.strategies.Dn(16)
-		); 
-		
-		Collections.shuffle(drawStrategies);
-		
-		List<BetStrategy> betStrategies = List.of(
-			new blackjack.strategies.Bn(10),
-			new blackjack.strategies.Bn(10),
-			new blackjack.strategies.Bn(15),
-			new blackjack.strategies.Bn(15),
-			new blackjack.strategies.Bn(20),
-			new blackjack.strategies.Bn(20)
-		);
-		
-		Collections.shuffle(betStrategies);
-		
-		ArrayList<Bot> bots = new ArrayList<>();
-		
-		for (int i=0; i<numberOfBots; i++) {
-			Bot bot = new Bot(decks, initialBalance, drawStrategies.get(i%drawStrategies.size()), betStrategies.get(i%betStrategies.size()));
-			//bots.
-			bots.add(bot);
-		}
-		
-		return bots;
+	    // Create mutable lists for strategies
+	    List<DrawStrategy> drawStrategies = new ArrayList<>(List.of(
+	        new blackjack.strategies.Dn(18),
+	        new blackjack.strategies.Dn(18),
+	        new blackjack.strategies.Dn(17),
+	        new blackjack.strategies.Dn(17),
+	        new blackjack.strategies.Dn(16),
+	        new blackjack.strategies.Dn(16)
+	    ));
+
+	    List<BetStrategy> betStrategies = new ArrayList<>(List.of(
+	        new blackjack.strategies.Bn(10),
+	        new blackjack.strategies.Bn(10),
+	        new blackjack.strategies.Bn(15),
+	        new blackjack.strategies.Bn(15),
+	        new blackjack.strategies.Bn(20),
+	        new blackjack.strategies.Bn(20)
+	    ));
+
+	    // Shuffle strategies
+	    Collections.shuffle(drawStrategies);
+	    Collections.shuffle(betStrategies);
+
+	    // Create bots using shuffled strategies
+	    ArrayList<Bot> bots = new ArrayList<>();
+	    for (int i = 0; i < numberOfBots; i++) {
+	        DrawStrategy draw = drawStrategies.get(i % drawStrategies.size());
+	        BetStrategy bet = betStrategies.get(i % betStrategies.size());
+	        bots.add(new Bot(decks, initialBalance, draw, bet));
+	    }
+
+	    return bots;
 	}
 }
