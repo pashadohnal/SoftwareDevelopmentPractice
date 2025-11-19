@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import gameModes.Local;
 import pokerDecks.Decks;
 
-public class DealerTest {
+public class DealerUnitTest {
     @Test
     public void testDraw2() {
     	Decks decks = new Decks(); 

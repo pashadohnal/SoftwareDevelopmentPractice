@@ -20,30 +20,11 @@ public class Gambling {
 		return true;
 	}
 	
-	public void updateBalance(int selfValue, int dealerValue) {
-		if(selfValue>21) {
-			bust();
-			return;
-		}
-		if(dealerValue>21) {
-			blackjack();
-			return;
-		}
-		if(selfValue>dealerValue) {
-			blackjack();
-			return;
-		}
-		if(selfValue<dealerValue) {
-			bust();
-			return;
-		}
-	}
-	
-	private void blackjack() {
+	public void blackjack() {
 		balance += bet;
 	}
 	
-	private void bust() {
+	public void bust() {
 		balance -= bet;
 	}
 }

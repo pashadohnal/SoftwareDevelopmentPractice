@@ -4,26 +4,56 @@ import pokerDecks.*;
 import blackjack.strategies.*;
 import blackjack.traits.*;
 
+import java.util.Scanner;
+
 public class Player {
-	protected PlayCard playCard;
-	protected Gambling gambling;
-	protected DrawStrategy drawStrategy;
-	protected BetStrategy betStrategy;
+	private PlayCard playCard;
+	private Gambling gambling;
+	private AskPlayerDraw drawStrategy;
+	private AskPlayerBet betStrategy;
 	
-	public Player(Decks decks, int initialBalance, DrawStrategy drawStrategy, BetStrategy betStrategy) {
+	public Player(Decks decks, int initialBalance, Scanner scanner) {
 		this.playCard = new PlayCard(decks);
 		this.gambling = new Gambling(initialBalance);
-		this.drawStrategy = drawStrategy;
-		this.betStrategy = betStrategy;
+		this.drawStrategy = new AskPlayerDraw(scanner);
+		this.betStrategy = new AskPlayerBet(scanner);
 	}
 	
 	public void updateBalance(int dealerValue) {
-		gambling.updateBalance(playCard.getValue(), dealerValue);
+		int value = playCard.getValue();
+		if(value>21) {
+			gambling.bust();
+			return;
+		}
+		if(dealerValue>21) {
+			gambling.blackjack();
+			return;
+		}
+		if(value>dealerValue) {
+			gambling.blackjack();
+			return;
+		}
+		if(value<dealerValue) {
+			gambling.bust();
+			return;
+		}
 	}
 	
-	// public boolean drawCard() {}
+	public boolean drawCard() {
+		if(playCard.gethandsize()<2) {
+			playCard.drawCard();
+			return true;
+		}
+		boolean draw = drawStrategy.drawCard();
+		if (draw) playCard.drawCard();
+		return draw;
+	}
 	
-	// public int placeBet() {}
+	public int placeBet() {
+		int bet = betStrategy.placeBet(gambling.getBalance());
+		gambling.placeBet(bet);
+		return bet;
+	}
 	
 	public void reset() {
 		playCard.reset();
@@ -41,3 +71,4 @@ public class Player {
 		return gambling.getBalance();
 	}
 }
+

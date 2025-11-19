@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import pokerDecks.Card;
 
-public class CardTest {
+public class CardUnitTest {
 
     @Test
     public void testNumberCardValueAndToString() {
