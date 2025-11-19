@@ -52,6 +52,10 @@ public class Bot {
 		return bet;
 	}
 	
+	public void reset() {
+		playCard.reset();
+	}
+	
 	public static List<Bot> makeBots(Decks decks, int initialBalance, int numberOfBots) {
 		List<DrawStrategy> drawStrategies = List.of(
 			new blackjack.strategies.Dn(18),

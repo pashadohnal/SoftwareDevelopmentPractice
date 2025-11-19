@@ -50,4 +50,8 @@ public class Player {
 		gambling.placeBet(bet);
 		return bet;
 	}
+	
+	public void reset() {
+		playCard.reset();
+	}
 }

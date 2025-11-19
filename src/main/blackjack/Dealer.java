@@ -18,4 +18,7 @@ public class Dealer {
 		return draw;
 	}
 	
+	public void reset() {
+		playCard.reset();
+	}
 }
