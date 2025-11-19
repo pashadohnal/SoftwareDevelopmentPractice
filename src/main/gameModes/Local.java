@@ -7,6 +7,7 @@ import blackjack.Player;
 import pokerDecks.Card;
 import pokerDecks.Decks;
 
+
 /**
  * SinglePlayer - Console-based single-player mode for a simplified Blackjack game.
  *
@@ -46,13 +47,13 @@ public class Local {
 	        int initBalance = askInitBalance(scanner);
 	        Decks decks = new Decks(4, Card.genDeck());
 	        Dealer dealer = new Dealer(decks);
-	        Player human = new Player(decks, initBalance);
+	        Player human = new Player(decks, initBalance,scanner);
 	        ArrayList<Player> bots = makeBots(scanner, initBalance, decks);
 	        boolean playMoreRounds = true;
 	        while (playMoreRounds) {
 	            reset(decks, dealer, human, bots);
 	            initBet(scanner, human);
-	            if (human.getAccountBalance() <= 0) {
+	            if (human.getBalance() <= 0) {
 	                System.out.println("You have no money left for another round.");
 	                break;
 	            }
@@ -164,11 +165,11 @@ public class Local {
      * @param human the human Player who will place the bet
      */
     public static void initBet(Scanner scanner, Player human) {
-        if (human.getAccountBalance() <= 0) {
+        if (human.getBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
             return;
         }
-        int balance = human.getAccountBalance();
+        int balance = human.getBalance();
         System.out.println("Your current balance: $" + balance);
         while (true) {
             System.out.print("How much do you want to bet? (1–" + balance + "): ");
@@ -193,7 +194,7 @@ public class Local {
                 System.out.println("You don't have enough money. Maximum bet: $" + balance);
                 continue;
             }
-            if (human.betting(bet)) {
+            if (human.placeBet()) {
                 System.out.println("Bet accepted: $" + bet);
                 return;
             } else {
@@ -215,8 +216,8 @@ public class Local {
     public static void initPlayers(Dealer dealer, Player human, ArrayList<Player> bots) {
     	for (int i=0; i<2; i++) {
 			dealer.drawCard();
-			human.draw();
-			for (Player bot: bots) {bot.draw();}
+			human.drawCard();
+			for (Player bot: bots) {bot.drawCard();}
 		}
     }
     
@@ -272,7 +273,7 @@ public class Local {
 	        char choice = line.charAt(0);
 
 	        if (choice == 'H') {
-	            player.draw();
+	            player.drawCard();
 	            System.out.println(name + " " + player.handToString(false));
 	            if (player.getValue() > 21) {
 	                System.out.println(name + " busts!");
@@ -292,7 +293,7 @@ public class Local {
 	        System.out.print("Bot " + (botIndex + 1) + " (H)it or (S)tand? ");
 	        if (hit) {
 	            System.out.println("H");
-	            bot.draw();
+	            bot.drawCard();
 	            System.out.println("Bot " + (botIndex + 1) + " hits: " + bot.handToString(false));
 	            if (bot.getValue() > 21) {
 	                System.out.println("Bot " + (botIndex + 1) + " busts!");
@@ -368,9 +369,9 @@ public class Local {
      * @param bots list of bots whose balances are printed
      */
     public static void showBalance(Player human, ArrayList<Player> bots) {
-    	System.out.println("Player balance : " + human.getAccountBalance());
+    	System.out.println("Player balance : " + human.getBalance());
     	for (int i=0; i<bots.size(); i++) {
-			System.out.println("Bot " + (i+1) +" balance : " + bots.get(i).getAccountBalance());
+			System.out.println("Bot " + (i+1) +" balance : " + bots.get(i).getBalance());
 		}
     }
     
