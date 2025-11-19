@@ -1,28 +1,29 @@
-package unitTests;
+package blackjack;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import blackjack.*;
+import gameModes.Local;
+import pokerDecks.Decks;
 
-public class TestDealer {
+public class DealerUnitTest {
     @Test
     public void testDraw2() {
-    	Decks.reset();
+    	Decks decks = new Decks(); 
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
-    	dealer.draw();
-    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
+    	Bot dealer = new Bot();
+    	dealer.drawCard();
+    	assertEquals(dealer.getValue(), Local.valueOf(0, cards.get(0)));
     }
     @Test
     public void testDraw3() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
-    	dealer.draw();
-    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)));
+    	Bot dealer = new Bot();
+    	dealer.drawCard();
+    	assertEquals(dealer.getValue(), Local.valueOf(0, cards.get(0)));
     	dealer.reset();
     	assertEquals(dealer.getValue(), 0);
     }
@@ -30,21 +31,21 @@ public class TestDealer {
     public void testDraw4() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
-    	dealer.draw();
-    	dealer.draw();
-    	assertEquals(dealer.getValue(), Blackjack.valueOf(0, cards.get(0)) + Blackjack.valueOf(Blackjack.valueOf(0, cards.get(0)), cards.get(1)));
+    	Bot dealer = new Bot();
+    	dealer.drawCard();
+    	dealer.drawCard();
+    	assertEquals(dealer.getValue(), Local.valueOf(0, cards.get(0)) + Local.valueOf(Local.valueOf(0, cards.get(0)), cards.get(1)));
     }
     @Test
     public void testDraw5() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
-    	dealer.draw('7');
-    	dealer.draw('8');
-    	dealer.draw('2');
-    	dealer.play();
-    	dealer.play();
+    	Bot dealer = new Bot();
+    	dealer.drawCard('7');
+    	dealer.drawCard('8');
+    	dealer.drawCard('2');
+    	dealer.autoDraw();
+    	dealer.autoDraw();
     	assertEquals(dealer.getValue(), 17);
     	assertEquals(3,dealer.getHand().size());
     }
@@ -52,8 +53,8 @@ public class TestDealer {
     public void testDraw6() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
-    	dealer.play();
+    	Bot dealer = new Bot();
+    	dealer.autoDraw();
     	assertTrue(dealer.getValue() > 17);
     	assertTrue(dealer.getValue() < 28);
     }
@@ -61,11 +62,11 @@ public class TestDealer {
     public void testDraw7() {
     	Decks.reset();
     	ArrayList<Character> cards = Decks.getDeck();
-    	Dealer dealer = new Dealer();
-    	dealer.draw('9');
-    	dealer.draw('8');
-    	dealer.draw('2');
-    	dealer.play();
+    	Bot dealer = new Bot();
+    	dealer.drawCard('9');
+    	dealer.drawCard('8');
+    	dealer.drawCard('2');
+    	dealer.autoDraw();
         
         assertEquals(3, dealer.getHand().size());
     }
