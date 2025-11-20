@@ -19,7 +19,7 @@ public class User extends Player {
 	}
 	
 	public int placeBet() {
-		int bet = betStrategy.placeBet(gambling.getBalance());
+		int bet = betStrategy.placeBet(name, gambling.getBalance());
 		gambling.placeBet(bet);
 		return bet;
 	}
