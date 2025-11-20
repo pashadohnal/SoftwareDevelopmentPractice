@@ -6,12 +6,12 @@ import blackjack.strategies.*;
 import java.util.*;
 
 public class Bot extends Player {	
-	public Bot(Decks decks, int initialBalance, DrawStrategy drawStrategy, BetStrategy betStrategy) {
-		super(decks, initialBalance, drawStrategy, betStrategy);
+	public Bot(String name, Decks decks, int initialBalance, DrawStrategy drawStrategy, BetStrategy betStrategy) {
+		super(name, decks, initialBalance, drawStrategy, betStrategy);
 	}
 	
 	public boolean drawCard() {
-		boolean draw = drawStrategy.drawCard(playCard.getValue());
+		boolean draw = drawStrategy.drawCard(name, playCard.getValue());
 		if (draw) playCard.drawCard();
 		return draw;
 	}
@@ -45,7 +45,7 @@ public class Bot extends Player {
 	    for (int i = 0; i < numberOfBots; i++) {
 	        DrawStrategy draw = drawStrategies.get(i % drawStrategies.size());
 	        BetStrategy bet = betStrategies.get(i % betStrategies.size());
-	        bots.add(new Bot(decks, initialBalance, draw, bet));
+	        bots.add(new Bot("Bot " + (i+1), decks, initialBalance, draw, bet));
 	    }
 
 	    return bots;

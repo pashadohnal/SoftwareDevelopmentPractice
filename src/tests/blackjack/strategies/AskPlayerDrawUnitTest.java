@@ -13,21 +13,21 @@ public class AskPlayerDrawUnitTest {
     public void testHitImmediate() {
         Scanner scanner = new Scanner("H\n");
         AskPlayerDraw strategy = new AskPlayerDraw(scanner);
-        assertTrue(strategy.drawCard(), "Input 'H' should result in true (hit)");
+        assertTrue(strategy.drawCard(""), "Input 'H' should result in true (hit)");
     }
 
     @Test
     public void testStandImmediate() {
         Scanner scanner = new Scanner("S\n");
         AskPlayerDraw strategy = new AskPlayerDraw(scanner);
-        assertFalse(strategy.drawCard(), "Input 'S' should result in false (stand)");
+        assertFalse(strategy.drawCard(""), "Input 'S' should result in false (stand)");
     }
 
     @Test
     public void testLowercaseAndWhitespaceHandled() {
         Scanner scanner = new Scanner("  h  \n");
         AskPlayerDraw strategy = new AskPlayerDraw(scanner);
-        assertTrue(strategy.drawCard(), "Lowercase 'h' with whitespace should still be interpreted as hit");
+        assertTrue(strategy.drawCard(""), "Lowercase 'h' with whitespace should still be interpreted as hit");
     }
 
     @Test
@@ -40,7 +40,7 @@ public class AskPlayerDrawUnitTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(baos));
         try {
-            boolean result = strategy.drawCard();
+            boolean result = strategy.drawCard("");
             String output = baos.toString();
             assertTrue(output.contains("Invalid input. Please type H or S."), "Should print invalid input message");
             assertTrue(result, "After invalid input, subsequent 'H' should return true");
@@ -59,7 +59,7 @@ public class AskPlayerDrawUnitTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(baos));
         try {
-            boolean result = strategy.drawCard();
+            boolean result = strategy.drawCard("");
             String output = baos.toString();
             assertTrue(output.contains("Invalid input. Please type H or S."), "Should print invalid input message for empty input");
             assertFalse(result, "After empty input then 'S', drawCard should return false");

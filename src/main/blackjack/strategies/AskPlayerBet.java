@@ -9,9 +9,9 @@ public class AskPlayerBet extends BetStrategy {
 		this.scanner = scanner;
 	}
 	
-	public int placeBet(int balance) {
+	public int placeBet(String name, int balance) {
 		while (true) {
-	        System.out.print("Place your bet (Balance: " + balance + "): ");
+	        System.out.print(name + " Place your bet (Balance: " + balance + "): ");
 	        String line = scanner.nextLine().trim();
 	        try {
 	            int bet = Integer.parseInt(line);

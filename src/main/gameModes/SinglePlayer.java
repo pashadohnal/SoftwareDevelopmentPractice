@@ -31,7 +31,7 @@ import pokerDecks.Decks;
  *
  * <p>Public API: this class is a standalone driver (all methods are static).
  */
-public class Local {
+public class SinglePlayer {
     /**
      * Program entry point. Starts an interactive single-player blackjack session.
      *
@@ -48,7 +48,7 @@ public class Local {
 	        int initBalance = askInitBalance(scanner);
 	        Decks decks = new Decks(4, Card.genDeck());
 	        Dealer dealer = new Dealer(decks);
-	        User human = new User(decks, initBalance,scanner);
+	        User human = new User("Player", decks, initBalance,scanner);
 	        ArrayList<Bot> bots = makeBots(scanner, initBalance, decks);
 	        boolean playMoreRounds = true;
 	        while (playMoreRounds) {

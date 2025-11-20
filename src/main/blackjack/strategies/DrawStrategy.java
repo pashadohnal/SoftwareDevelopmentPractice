@@ -2,14 +2,12 @@ package blackjack.strategies;
 
 public class DrawStrategy {
 
-	// for Dn
-	public boolean drawCard(int value) {
+	public boolean drawCard(String name) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	// for AskPlayerDraw
-	public boolean drawCard() {
+
+	public boolean drawCard(String name, int value) {
 		// TODO Auto-generated method stub
 		return false;
 	}

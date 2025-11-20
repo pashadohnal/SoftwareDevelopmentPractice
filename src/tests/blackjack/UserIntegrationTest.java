@@ -21,7 +21,7 @@ public class UserIntegrationTest {
         cards.add(new Card(Card.Suit.HEART, Card.Face.TEN));
         Decks decks = new Decks(1, cards);
 
-        User user = new User(decks, 100, scanner);
+        User user = new User("", decks, 100, scanner);
         int bet = user.placeBet();
         assertEquals(25, bet, "User should place the bet provided via scanner");
         // placing a bet does not immediately change balance (Gambling stores the bet)
@@ -36,7 +36,7 @@ public class UserIntegrationTest {
         cards.add(new Card(Card.Suit.SPADE, Card.Face.A));
         Decks decks = new Decks(1, cards);
 
-        User user = new User(decks, 50, scanner);
+        User user = new User("", decks, 50, scanner);
 
         PrintStream originalOut = System.out;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -59,7 +59,7 @@ public class UserIntegrationTest {
         cards.add(new Card(Card.Suit.DIAMOND, Card.Face.TEN));
         Decks decks = new Decks(1, cards);
 
-        User user = new User(decks, 10, scanner);
+        User user = new User("", decks, 10, scanner);
         boolean drew = user.drawCard();
         assertTrue(drew, "User should draw when input is 'H'");
         assertEquals(10, user.getValue(), "After drawing TEN, user's value should be 10");
@@ -73,7 +73,7 @@ public class UserIntegrationTest {
         cards.add(new Card(Card.Suit.CLUB, Card.Face.FIVE));
         Decks decks = new Decks(1, cards);
 
-        User user = new User(decks, 10, scanner);
+        User user = new User("", decks, 10, scanner);
 
         PrintStream originalOut = System.out;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

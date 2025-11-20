@@ -9,21 +9,37 @@ public class Player {
 	protected Gambling gambling;
 	protected DrawStrategy drawStrategy;
 	protected BetStrategy betStrategy;
+	protected String name;
 	
-	public Player(Decks decks, int initialBalance, DrawStrategy drawStrategy, BetStrategy betStrategy) {
+	public Player(String name, Decks decks, int initialBalance, DrawStrategy drawStrategy, BetStrategy betStrategy) {
+		this.name = name;
 		this.playCard = new PlayCard(decks);
 		this.gambling = new Gambling(initialBalance);
 		this.drawStrategy = drawStrategy;
 		this.betStrategy = betStrategy;
 	}
 	
+	public boolean drawCard() {
+		return false;
+	}
+	
+	public int placeBet() {
+		return 0;
+	}
+	
+	// default functions
+	
+	public void forceDrawCard() {
+		playCard.drawCard();
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	public void updateBalance(int dealerValue) {
 		gambling.updateBalance(playCard.getValue(), dealerValue);
 	}
-	
-	// public boolean drawCard() {}
-	
-	// public int placeBet() {}
 	
 	public void reset() {
 		playCard.reset();
