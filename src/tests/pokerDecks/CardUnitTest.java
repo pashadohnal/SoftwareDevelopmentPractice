@@ -45,5 +45,10 @@ public class CardUnitTest {
         assertEquals(1, a.getValue(), "Ace base value should be 1");
         assertEquals("♠A", a.toString(), "Ace toString should include 'A'");
     }
+    @Test
+	public void testGendeck() {
+		var deck = Card.genDeck();
+		assertEquals(52, deck.size(), "Deck should contain 52 cards");
+	}
 
 }
