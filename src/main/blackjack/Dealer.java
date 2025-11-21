@@ -10,7 +10,7 @@ public class Dealer extends Player {
 	}
 	
 	public boolean drawCard() {
-		boolean draw = drawStrategy.drawCard(name, playCard.getValue());
+		boolean draw = drawStrategy.drawCard(playCard.getValue());
 		if (draw) playCard.drawCard();
 		return draw;
 	}

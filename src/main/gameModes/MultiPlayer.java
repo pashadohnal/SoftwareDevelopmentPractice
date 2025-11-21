@@ -22,6 +22,7 @@ public class MultiPlayer {
 			draw2Cards(players);
 			dealerShow1(players);
 			playRound(players);
+			dealerReveal(players.get(0));
 			updateBalances(players);
 		}while (nextRound(scanner));
 		scanner.close();
@@ -99,6 +100,20 @@ public class MultiPlayer {
 				}
 			} while (player.getValue() < 21 && drew);
 		}
+	}
+    
+	public static void dealerReveal(Player dealer) {
+		boolean drew;
+		do {
+			System.out.println(dealer.getName() + "'s hand: " + dealer.handToString(false) + " (Value: " + dealer.getValue() + ")");
+			drew = dealer.drawCard();
+			if (drew) {
+				System.out.println(dealer.getName() + " drew a card. New hand: " + dealer.handToString(false) + " (Value: " + dealer.getValue() + ")");
+			} else {
+				System.out.println(dealer.getName() + " chose to stand.");
+			}
+		} while (dealer.getValue() < 21 && drew);	
+		System.out.println(dealer.getName() + "'s hand: " + dealer.handToString(false) + " (Value: " + dealer.getValue() + ")");
 	}
     
     public static void updateBalances(ArrayList<Player> players) {
