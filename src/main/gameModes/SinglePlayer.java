@@ -265,8 +265,9 @@ public class SinglePlayer {
 
 
 	private static void playerTurn(Scanner scanner, User player, String name) {
+		for(Bot bot: bots) 
+		{System.out.println("Bot " + (bots.indexOf(bot)+1) + "'s hand " + bot.handToString(false) + " (Value: " + bot.getValue() + ")");}
 	    System.out.println(name + " " + player.handToString(false));
-
 	    while (true) {
 	        System.out.print("(H)it or (S)tand : ");
 	        String line = scanner.nextLine().trim().toUpperCase();
