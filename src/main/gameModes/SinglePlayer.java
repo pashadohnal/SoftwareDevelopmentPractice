@@ -60,7 +60,7 @@ public class SinglePlayer {
 	            initBet(scanner, human, bots);
 	            initPlayers(dealer, human, bots);
 	            sideBet(scanner, dealer);
-	            playerTurn(scanner, human, "Player");
+	            playerTurn(scanner, bots, human, "Player");
 	    		playAllBots(bots);
 	    		dealerTurn(dealer);	
 	            sidBetfinish(scanner, dealer);
@@ -75,6 +75,8 @@ public class SinglePlayer {
 	        }
 	    }
 	}
+    
+    
 	private static boolean wantsGame(Scanner scanner) {
 	    while (true) {
 	        System.out.print("Start a completely new game? (Y/N): ");
@@ -236,7 +238,7 @@ public class SinglePlayer {
      * @param dealer the dealer player whose visible card is printed
      */
     public static void sideBet(Scanner scanner, Dealer dealer) {
-    	System.out.println("Dealer's " + dealer.handToString(true));
+    	System.out.println("Dealer's card: " + dealer.handToString(true));
     }
 
     /**
@@ -264,7 +266,7 @@ public class SinglePlayer {
      */
 
 
-	private static void playerTurn(Scanner scanner, User player, String name) {
+	private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player, String name) {
 		for(Bot bot: bots) 
 		{System.out.println("Bot " + (bots.indexOf(bot)+1) + "'s hand " + bot.handToString(false) + " (Value: " + bot.getValue() + ")");}
 	    System.out.println(name + " " + player.handToString(false));
