@@ -266,32 +266,21 @@ public class SinglePlayer {
      */
 
 
-	private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player, String name) {
+private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player, String name) {
 		for(Bot bot: bots) 
 		{System.out.println("Bot " + (bots.indexOf(bot)+1) + "'s hand " + bot.handToString(false) + " (Value: " + bot.getValue() + ")");}
 	    System.out.println(name + " " + player.handToString(false));
-	    while (true) {
-	        System.out.print("(H)it or (S)tand : ");
-	        String line = scanner.nextLine().trim().toUpperCase();
-	        if (line.isEmpty()) {
-	            System.out.println("Invalid input. Please type H or S.");
-	            continue;
-	        }
-	        char choice = line.charAt(0);
-
-	        if (choice == 'H') {
-	            player.drawCard();
-	            System.out.println(name + " " + player.handToString(false));
-	            if (player.getValue() > 21) {
-	                System.out.println(name + " busts!");
-	                break;
-	            }
-	        } else if (choice == 'S') {
-	            break;
-	        } else {
-	            System.out.println("Invalid input. Please type H or S.");
-	        }
-	    }
+		boolean drew;
+		do {
+			drew = player.drawCard();
+			System.out.println(player.getName() + "'s hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
+			if (drew) {
+				System.out.println(player.getName() + " drew a card. New hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
+			} else {
+				System.out.println(player.getName() + " chose to stand.");
+			}
+		} while (player.getValue() < 21 && drew);
+	
 	}
 	private static void botTurn(Bot bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
