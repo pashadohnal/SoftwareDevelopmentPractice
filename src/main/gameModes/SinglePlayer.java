@@ -220,7 +220,7 @@ public class SinglePlayer {
     public static void initPlayers(Dealer dealer, User human, ArrayList<Bot> bots) {
     	for (int i=0; i<2; i++) {
 			dealer.drawCard();
-			human.drawCard();
+			human.forceDrawCard();
 			for (Bot bot: bots) {bot.drawCard();}
 		}
     }
@@ -236,7 +236,7 @@ public class SinglePlayer {
      * @param dealer the dealer player whose visible card is printed
      */
     public static void sideBet(Scanner scanner, Dealer dealer) {
-    	System.out.println(dealer.handToString(true));
+    	System.out.println("Dealer's " + dealer.handToString(true));
     }
 
     /**
