@@ -89,6 +89,11 @@ public class MultiPlayer {
     public static void playRound(ArrayList<Player> players) {
 		// To be implemented: game logic for playing a round
     	for (Player player : players.subList(1, players.size())) {
+			for (Player p : players.subList(1, players.size())) {
+                if (p != player) {
+                    System.out.println(p.getName() + "'s hand: " + p.handToString(false) +  " (Value: " + p.getValue() + ")");}
+                }
+            System.out.println();
 			boolean drew;
 			do {
 				System.out.println(player.getName() + "'s hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
