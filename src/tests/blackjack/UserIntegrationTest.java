@@ -87,5 +87,19 @@ public class UserIntegrationTest {
             System.setOut(originalOut);
         }
     }
+    @Test
+	public void testMakeMultipleUsers() {
+		String input = "10\n20\n";
+		Scanner scanner = new Scanner(input);
+		ArrayList<Card> cards = new ArrayList<>();
+		cards.add(new Card(Card.Suit.HEART, Card.Face.TWO));
+		Decks decks = new Decks(1, cards);
+		ArrayList<User> users = User.makeUser(decks, 100, scanner, 2);
+		assertEquals(2, users.size(), "Should create the specified number of users");
+		int bet1 = users.get(0).placeBet();
+		int bet2 = users.get(1).placeBet();
+		assertEquals(10, bet1, "First user should place the first bet from input");
+		assertEquals(20, bet2, "Second user should place the second bet from input");
+	}
 
 }
