@@ -11,17 +11,17 @@ public class AskPlayerBetUnitTest {
 
     @Test
     public void testValidBetImmediate() {
-        Scanner scanner = new Scanner("25\n");
+        Scanner scanner = new Scanner("100\n");
         AskPlayerBet strategy = new AskPlayerBet(scanner);
-        int bet = strategy.placeBet(100);
-        assertEquals(25, bet);
+        int bet = strategy.placeBet("player",100);
+        assertEquals(100, bet);
     }
 
     @Test
     public void testNonNumericThenValid() {
         Scanner scanner = new Scanner("abc\n30\n");
         AskPlayerBet strategy = new AskPlayerBet(scanner);
-        int bet = strategy.placeBet(100);
+        int bet = strategy.placeBet("player",100);
         assertEquals(30, bet);
     }
 
@@ -29,7 +29,7 @@ public class AskPlayerBetUnitTest {
     public void testNegativeThenValid() {
         Scanner scanner = new Scanner("-5\n10\n");
         AskPlayerBet strategy = new AskPlayerBet(scanner);
-        int bet = strategy.placeBet(50);
+        int bet = strategy.placeBet("player",50);
         assertEquals(10, bet);
     }
 
@@ -37,7 +37,7 @@ public class AskPlayerBetUnitTest {
     public void testZeroThenValid() {
         Scanner scanner = new Scanner("0\n5\n");
         AskPlayerBet strategy = new AskPlayerBet(scanner);
-        int bet = strategy.placeBet(20);
+        int bet = strategy.placeBet("player",20);
         assertEquals(5, bet);
     }
 
@@ -52,7 +52,7 @@ public class AskPlayerBetUnitTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(baos));
         try {
-            int bet = strategy.placeBet(50);
+            int bet = strategy.placeBet("player",50);
             String output = baos.toString();
 
             assertTrue(output.contains("Invalid bet amount") || output.contains("Invalid input"),
