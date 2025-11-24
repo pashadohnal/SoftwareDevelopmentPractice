@@ -4,7 +4,7 @@ import java.util.*;
 
 import blackjack.Bot;
 import blackjack.Dealer;
-import blackjack.Player;
+import blackjack.User;
 import pokerDecks.Card;
 import pokerDecks.Decks;
 
@@ -31,7 +31,7 @@ import pokerDecks.Decks;
  *
  * <p>Public API: this class is a standalone driver (all methods are static).
  */
-public class Local {
+public class SinglePlayer {
     /**
      * Program entry point. Starts an interactive single-player blackjack session.
      *
@@ -48,19 +48,19 @@ public class Local {
 	        int initBalance = askInitBalance(scanner);
 	        Decks decks = new Decks(4, Card.genDeck());
 	        Dealer dealer = new Dealer(decks);
-	        Player human = new Player(decks, initBalance,scanner);
+	        User human = new User("Player", decks, initBalance,scanner);
 	        ArrayList<Bot> bots = makeBots(scanner, initBalance, decks);
 	        boolean playMoreRounds = true;
 	        while (playMoreRounds) {
 	            reset(decks, dealer, human, bots);
-	            initBet(scanner, human, bots);
 	            if (human.getBalance() <= 0) {
 	                System.out.println("You have no money left for another round.");
 	                break;
 	            }
+	            initBet(scanner, human, bots);
 	            initPlayers(dealer, human, bots);
 	            sideBet(scanner, dealer);
-	            playerTurn(scanner, human, "Player");
+	            playerTurn(scanner, bots, human, "Player");
 	    		playAllBots(bots);
 	    		dealerTurn(dealer);	
 	            sidBetfinish(scanner, dealer);
@@ -75,6 +75,8 @@ public class Local {
 	        }
 	    }
 	}
+    
+    
 	private static boolean wantsGame(Scanner scanner) {
 	    while (true) {
 	        System.out.print("Start a completely new game? (Y/N): ");
@@ -163,7 +165,7 @@ public class Local {
      * @param scanner Scanner for reading the user's bet
      * @param human the human Player who will place the bet
      */
-    public static void initBet(Scanner scanner, Player human, ArrayList<Bot> bots) {
+    public static void initBet(Scanner scanner, User human, ArrayList<Bot> bots) {
     	/*
         if (human.getBalance() <= 0) {
             System.out.println("Lost all. Cannot place bet.");
@@ -217,10 +219,10 @@ public class Local {
      * @param human the human Player (will receive two cards)
      * @param bots list of bot players to deal two cards each
      */
-    public static void initPlayers(Dealer dealer, Player human, ArrayList<Bot> bots) {
+    public static void initPlayers(Dealer dealer, User human, ArrayList<Bot> bots) {
     	for (int i=0; i<2; i++) {
 			dealer.drawCard();
-			human.drawCard();
+			human.forceDrawCard();
 			for (Bot bot: bots) {bot.drawCard();}
 		}
     }
@@ -236,7 +238,7 @@ public class Local {
      * @param dealer the dealer player whose visible card is printed
      */
     public static void sideBet(Scanner scanner, Dealer dealer) {
-    	System.out.println(dealer.handToString(true));
+    	System.out.println("Dealer's card: " + dealer.handToString(true));
     }
 
     /**
@@ -264,31 +266,21 @@ public class Local {
      */
 
 
-	private static void playerTurn(Scanner scanner, Player player, String name) {
+private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player, String name) {
+		for(Bot bot: bots) 
+		{System.out.println("Bot " + (bots.indexOf(bot)+1) + "'s hand " + bot.handToString(false) + " (Value: " + bot.getValue() + ")");}
 	    System.out.println(name + " " + player.handToString(false));
-
-	    while (true) {
-	        System.out.print("(H)it or (S)tand : ");
-	        String line = scanner.nextLine().trim().toUpperCase();
-	        if (line.isEmpty()) {
-	            System.out.println("Invalid input. Please type H or S.");
-	            continue;
-	        }
-	        char choice = line.charAt(0);
-
-	        if (choice == 'H') {
-	            player.drawCard();
-	            System.out.println(name + " " + player.handToString(false));
-	            if (player.getValue() > 21) {
-	                System.out.println(name + " busts!");
-	                break;
-	            }
-	        } else if (choice == 'S') {
-	            break;
-	        } else {
-	            System.out.println("Invalid input. Please type H or S.");
-	        }
-	    }
+		boolean drew;
+		do {
+			drew = player.drawCard();
+			System.out.println(player.getName() + "'s hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
+			if (drew) {
+				System.out.println(player.getName() + " drew a card. New hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
+			} else {
+				System.out.println(player.getName() + " chose to stand.");
+			}
+		} while (player.getValue() < 21 && drew);
+	
 	}
 	private static void botTurn(Bot bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
@@ -341,7 +333,7 @@ public class Local {
      * @param human human player whose hand is cleared
      * @param bots list of bot players whose hands are cleared
      */
-    public static void reset(Decks decks, Dealer dealer, Player human, ArrayList<Bot> bots) {
+    public static void reset(Decks decks, Dealer dealer, User human, ArrayList<Bot> bots) {
     	decks.reset();
     	dealer.reset();
         human.reset();
@@ -360,7 +352,7 @@ public class Local {
      * @param human the human player to update
      * @param bots list of bot players to update
      */
-    public static void updateBalance(Dealer dealer, Player human, ArrayList<Bot> bots) {
+    public static void updateBalance(Dealer dealer, User human, ArrayList<Bot> bots) {
     	int value = dealer.getValue();
     	human.updateBalance(value);
     	for (Bot bot: bots) {bot.updateBalance(value);}    
@@ -372,7 +364,7 @@ public class Local {
      * @param human human player whose balance is printed
      * @param bots list of bots whose balances are printed
      */
-    public static void showBalance(Player human, ArrayList<Bot> bots) {
+    public static void showBalance(User human, ArrayList<Bot> bots) {
     	System.out.println("Player balance : " + human.getBalance());
     	for (int i=0; i<bots.size(); i++) {
 			System.out.println("Bot " + (i+1) +" balance : " + bots.get(i).getBalance());

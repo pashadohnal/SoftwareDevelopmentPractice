@@ -9,9 +9,9 @@ public class AskPlayerDraw extends DrawStrategy {
 		this.scanner = scanner;
 	}
 	
-	public boolean drawCard() {
+	public boolean drawCard(String name) {
 	    while (true) {
-	        System.out.print("(H)it or (S)tand : ");
+	        System.out.print(name + " (H)it or (S)tand : ");
 	        String line = scanner.nextLine().trim().toUpperCase();
 	        if (line.isEmpty()) {
 	            System.out.println("Invalid input. Please type H or S.");
