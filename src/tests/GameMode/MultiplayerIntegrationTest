@@ -44,46 +44,6 @@ class MultiplayerIntegrationTest {
             return;
     }
 
-    @Test
-    void multiPlayer_finalBossTest_coverAllRemainingBranches() {
-        String input = """
-            j
-            1000
-            k
-            4
-            10000
-            100
-            200
-            300
-            400
-            S
-            S
-            S
-            S
-            Y
-            """;
-
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        ArrayList<Card> shoe = new ArrayList<>();
-        shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
-        shoe.add(new Card(Card.Suit.CLUB, Card.Face.TEN));
-        shoe.add(new Card(Card.Suit.SPADE, Card.Face.TEN));
-        shoe.add(new Card(Card.Suit.DIAMOND, Card.Face.TEN));
-        shoe.add(new Card(Card.Suit.HEART, Card.Face.SEVEN));
-        shoe.add(new Card(Card.Suit.CLUB, Card.Face.FIVE));
-        shoe.add(new Card(Card.Suit.SPADE, Card.Face.SIX));
-        shoe.add(new Card(Card.Suit.DIAMOND, Card.Face.FIVE));
-
-        shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
-        shoe.add(new Card(Card.Suit.CLUB, Card.Face.TEN));
-
-        for (int i = 0; i < 30; i++) shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
-
-        Decks fixedDecks = new Decks(1, shoe);
-
-        assertTrue(true);
-    }
 
     @Test
     void multiPlayer_initialBalanceTest() {
@@ -102,5 +62,6 @@ class MultiplayerIntegrationTest {
 
 			MultiPlayer.main(new String[0]);
 			assertTrue(true);
+			return;
     }
 }
