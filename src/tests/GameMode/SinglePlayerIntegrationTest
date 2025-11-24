@@ -237,5 +237,59 @@ public class SinglePlayerIntegrationTest {
 
 	    assertTrue(true);
 	}
+		@Test
+	void testwholegame() {
+		String input = """
+				2
+				
+				1
+				
+				1
+				
+				S
+				
+				Y
+				
+				1
+				
+				
+				S
+				
+				N
+				
+				N
+				""";
+		 System.setIn(new ByteArrayInputStream(input.getBytes()));
 
+			SinglePlayer.main(new String[0]);
+			assertTrue(true);
+			return;
+	}
+	@Test
+	void testnobalance() {
+		String input = """
+				2
+				
+				1
+				
+				2
+				
+				H
+				
+				H
+				
+				H
+				
+				H
+				
+				Y
+				
+                N
+				""";
+		 System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+			SinglePlayer.main(new String[0]);
+			assertTrue(true);
+			return;
+	}
 }
