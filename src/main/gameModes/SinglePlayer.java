@@ -77,7 +77,7 @@ public class SinglePlayer {
 	}
     
     
-	private static boolean wantsGame(Scanner scanner) {
+	public static boolean wantsGame(Scanner scanner) {
 	    while (true) {
 	        System.out.print("Start a completely new game? (Y/N): ");
 	        String input = scanner.nextLine().trim().toUpperCase();
@@ -266,7 +266,7 @@ public class SinglePlayer {
      */
 
 
-private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player, String name) {
+	public static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player, String name) {
 		for(Bot bot: bots) 
 		{System.out.println("Bot " + (bots.indexOf(bot)+1) + "'s hand " + bot.handToString(false) + " (Value: " + bot.getValue() + ")");}
 	    System.out.println(name + " " + player.handToString(false));
@@ -282,7 +282,7 @@ private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player
 		} while (player.getValue() < 21 && drew);
 	
 	}
-	private static void botTurn(Bot bot, int botIndex) {
+	public static void botTurn(Bot bot, int botIndex) {
 	    System.out.println("Bot " + (botIndex + 1) + " " + bot.handToString(false));
 
 	    while (true) {
@@ -303,12 +303,12 @@ private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player
 	        try { Thread.sleep(600); } catch (Exception ignored) {}
 	    }
 	}
-	private static void playAllBots(ArrayList<Bot> bots) {
+	public static void playAllBots(ArrayList<Bot> bots) {
 	    for (int i = 0; i < bots.size(); i++) {
 	        botTurn(bots.get(i), i);
 	    }
 	}
-	private static void dealerTurn(Dealer dealer) {
+	public static void dealerTurn(Dealer dealer) {
 	    System.out.println("Dealer's " + dealer.handToString(false));
 	    while (dealer.getValue() < 17) {
 	        dealer.drawCard();
@@ -380,7 +380,7 @@ private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player
      * @param scanner scanner used to read the user's reply
      * @return true if the user entered 'Y', false if the user entered 'N'
      */
-    private static boolean nextRound(Scanner scanner) {
+    public static boolean nextRound(Scanner scanner) {
         while (true) {
             System.out.print("Play another round? (Y/N): ");
             String input = scanner.nextLine().trim().toUpperCase();
@@ -393,5 +393,5 @@ private static void playerTurn(Scanner scanner, ArrayList<Bot> bots, User player
             }
             System.out.println("Invalid input. Please type Y or N.");
         }
-    }
+	}  
 }
