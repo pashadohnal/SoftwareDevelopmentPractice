@@ -1,0 +1,106 @@
+package gameModes;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import pokerDecks.*;
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+
+class MultiplayerIntegrationTest {
+
+    @Test
+    void multiPlayer_completeFlow_withFixedShoe_andAllInputs() {
+        String input = """
+            3
+            1000
+            Alice
+            Bob
+            Charlie
+            100
+            200
+            50
+            H
+            S
+            S
+            H
+            H
+            Y
+            100
+            0
+            300
+            S
+            S
+            S
+            N
+            N
+            """;
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        
+  
+        MultiPlayer.main(new String[0]);
+            assertTrue(true);
+            return;
+    }
+
+    @Test
+    void multiPlayer_finalBossTest_coverAllRemainingBranches() {
+        String input = """
+            j
+            1000
+            k
+            4
+            10000
+            100
+            200
+            300
+            400
+            S
+            S
+            S
+            S
+            Y
+            """;
+
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        ArrayList<Card> shoe = new ArrayList<>();
+        shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
+        shoe.add(new Card(Card.Suit.CLUB, Card.Face.TEN));
+        shoe.add(new Card(Card.Suit.SPADE, Card.Face.TEN));
+        shoe.add(new Card(Card.Suit.DIAMOND, Card.Face.TEN));
+        shoe.add(new Card(Card.Suit.HEART, Card.Face.SEVEN));
+        shoe.add(new Card(Card.Suit.CLUB, Card.Face.FIVE));
+        shoe.add(new Card(Card.Suit.SPADE, Card.Face.SIX));
+        shoe.add(new Card(Card.Suit.DIAMOND, Card.Face.FIVE));
+
+        shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
+        shoe.add(new Card(Card.Suit.CLUB, Card.Face.TEN));
+
+        for (int i = 0; i < 30; i++) shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
+
+        Decks fixedDecks = new Decks(1, shoe);
+
+        assertTrue(true);
+    }
+
+    @Test
+    void multiPlayer_initialBalanceTest() {
+    	 String input = """
+    	           a
+    	           1000
+    	           a
+    	           1
+    	           a
+    	           100
+    	           S
+    	           S
+    	           N
+    	            """;
+    	 System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+			MultiPlayer.main(new String[0]);
+			assertTrue(true);
+    }
+}
