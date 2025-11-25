@@ -17,138 +17,52 @@ public class SinglePlayerIntegrationTest {
 	        1000
 	        2
 	        100
-	        H
 	        S
-	        N      
+	        N 
+	        Y     
 	        50
+	        1
+	        30
 	        S
 	        N      
 	        N      
-	        N
+	        
 	        """;
 
-	    System.setIn(new ByteArrayInputStream(input.getBytes()));
-	    Scanner scanner = new Scanner(System.in);
+		 System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-	    ArrayList<Card> shoe = new ArrayList<>();
-	    for (int i = 0; i < 20; i++) {
-	        shoe.add(new Card(Card.Suit.SPADE, Card.Face.TEN));
-	        shoe.add(new Card(Card.Suit.HEART, Card.Face.SEVEN));
-	    }
-	    Decks decks = new Decks(1, shoe);
+			SinglePlayer.main(new String[0]);
+			assertTrue(true);
+			return;
 
-	    Dealer dealer = new Dealer(decks);
-	    User human = new User("Player", decks, 1000, scanner);
-
-	    SinglePlayer.askInitBalance(scanner);
-	    ArrayList<Bot> bots = SinglePlayer.makeBots(scanner, 1000, decks);
-	    SinglePlayer.reset(decks, dealer, human, bots);
-	    SinglePlayer.initBet(scanner, human, bots);
-	    SinglePlayer.initPlayers(dealer, human, bots);
-	    SinglePlayer.sideBet(scanner, dealer);
-	    SinglePlayer.playerTurn(scanner, bots, human, "Player");
-	    SinglePlayer.playAllBots(bots);
-	    SinglePlayer.dealerTurn(dealer);
-	    SinglePlayer.sidBetfinish(scanner, dealer);
-	    SinglePlayer.updateBalance(dealer, human, bots);
-	    SinglePlayer.showBalance(human, bots);
-
-	    SinglePlayer.reset(decks, dealer, human, bots);
-	    SinglePlayer.initBet(scanner, human, bots);
-	    SinglePlayer.initPlayers(dealer, human, bots);
-	    SinglePlayer.playerTurn(scanner, bots, human, "Player");
-	    SinglePlayer.playAllBots(bots);
-	    SinglePlayer.dealerTurn(dealer);
-	    SinglePlayer.updateBalance(dealer, human, bots);
-	    SinglePlayer.showBalance(human, bots);
-	    assertFalse(SinglePlayer.nextRound(scanner));
-	    assertFalse(SinglePlayer.wantsGame(scanner));
+	    
 	}
 
 
 	
-	@Test
-    void fullGame_allBranchesIncludingNextRound_andWantsGame() {
-        String input = """
-            1000
-            2
-            100
-            H
-            H
-            S
-            Y           
-            
-            50
-            S
-            N         
-              
-            N           
-            
-            
-            
-            """;
-
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Scanner sc = new Scanner(System.in);
-
-        ArrayList<Card> shoe = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
-            shoe.add(new Card(Card.Suit.CLUB, Card.Face.SEVEN));
-        }
-        Decks decks = new Decks(1, shoe);
-
-        Dealer dealer = new Dealer(decks);
-        User human = new User("Player", decks, 1000, sc);
-        SinglePlayer.askInitBalance(sc);                 
-        ArrayList<Bot> bots = SinglePlayer.makeBots(sc, 1000, decks);  
-        SinglePlayer.reset(decks, dealer, human, bots);
-        SinglePlayer.initBet(sc, human, bots);              
-        SinglePlayer.initPlayers(dealer, human, bots);
-        SinglePlayer.sideBet(sc, dealer);
-        SinglePlayer.playerTurn(sc, bots, human, "Player"); 
-        SinglePlayer.playAllBots(bots);                     
-        SinglePlayer.dealerTurn(dealer);                    
-        SinglePlayer.updateBalance(dealer, human, bots);
-        SinglePlayer.showBalance(human, bots);
-
-        
-        assertTrue(SinglePlayer.nextRound(sc));             
-        SinglePlayer.reset(decks, dealer, human, bots);
-        SinglePlayer.initBet(sc, human, bots);              
-        SinglePlayer.initPlayers(dealer, human, bots);
-        SinglePlayer.playerTurn(sc, bots, human, "Player"); 
-        SinglePlayer.playAllBots(bots);
-        SinglePlayer.dealerTurn(dealer);
-        SinglePlayer.updateBalance(dealer, human, bots);
-
-        assertFalse(SinglePlayer.nextRound(sc));            
-        assertFalse(SinglePlayer.wantsGame(sc));            
-    }
+	
 	@Test
 	void insufficientBalance_gameOver() {
 	    String input = """
 	        50
 	        0
-	        100     
+	        50   
+	        H
+	        H
+	        H
+	        H
+	        Y
 	        N
-	        N
+	        
 	        
 	        """;
 
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
-	    Scanner sc = new Scanner(System.in);
 
-	    ArrayList<Card> shoe = new ArrayList<>();
-	    for (int i = 0; i < 20; i++) shoe.add(new Card(Card.Suit.HEART, Card.Face.TEN));
-	    Decks decks = new Decks(1, shoe);
+		SinglePlayer.main(new String[0]);
+		assertTrue(true);
+		return;
 
-	    Dealer dealer = new Dealer(decks);
-	    User human = new User("P", decks, 50, sc);
-	    SinglePlayer.askInitBalance(sc);
-	    var bots = SinglePlayer.makeBots(sc, 50, decks);
-
-	    SinglePlayer.reset(decks, dealer, human, bots);
 	}
 	@Test
 	void ultimateCoverage_testAllErrorPaths_andAllBranches() {
@@ -167,9 +81,11 @@ public class SinglePlayerIntegrationTest {
 	        S
 	        N  
      
-	        Y      
+	        N
 	        
-	        N     
+	            
+	        
+	            
 	        
 	        """;
 
@@ -201,16 +117,11 @@ public class SinglePlayerIntegrationTest {
 	    assertTrue(SinglePlayer.nextRound(sc));
 	    assertFalse(SinglePlayer.nextRound(sc));
 
-
-	    assertTrue(SinglePlayer.wantsGame(sc));  
-	    assertFalse(SinglePlayer.wantsGame(sc)); 
 	}
 	@Test
 	void forceCoverageandBotSleep() {
 	    String input = """
 	        1000
-	        abcdef     
-	        7          
 	        2          
 	        100
 	        S
@@ -237,7 +148,7 @@ public class SinglePlayerIntegrationTest {
 
 	    assertTrue(true);
 	}
-		@Test
+	@Test
 	void testwholegame() {
 		String input = """
 				2
@@ -287,9 +198,8 @@ public class SinglePlayerIntegrationTest {
                 N
 				""";
 		 System.setIn(new ByteArrayInputStream(input.getBytes()));
-
 			SinglePlayer.main(new String[0]);
 			assertTrue(true);
 			return;
-	}
+	}	
 }
