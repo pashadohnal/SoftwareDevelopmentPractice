@@ -3,22 +3,20 @@ package gameModes;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import pokerDecks.*;
+
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
+
 
 class MultiplayerIntegrationTest {
 
     @Test
     void multiPlayer_completeFlow_withFixedShoe_andAllInputs() {
         String input = """
-            3
-            1000
-            Alice
-            Bob
-            Charlie
+            105
+        	3
             100
             200
+            100
             50
             H
             S
@@ -27,12 +25,11 @@ class MultiplayerIntegrationTest {
             H
             Y
             100
-            0
-            300
+            2
+            30
             S
             S
             S
-            N
             N
             """;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
@@ -43,6 +40,7 @@ class MultiplayerIntegrationTest {
             assertTrue(true);
             return;
     }
+
 
 
     @Test
