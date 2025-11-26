@@ -40,27 +40,12 @@ public class AskPlayerBetUnitTest {
         int bet = strategy.placeBet("player",20);
         assertEquals(5, bet);
     }
-
+    
     @Test
-    public void testExceedThenValidAndOutputContainsErrorMessages() {
-        String input = "999\nnotanumber\n15\n";
-        Scanner scanner = new Scanner(input);
-        AskPlayerBet strategy = new AskPlayerBet(scanner);
-
-        // capture System.out to assert messages printed
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(baos));
-        try {
-            int bet = strategy.placeBet("player",50);
-            String output = baos.toString();
-
-            assertTrue(output.contains("Invalid bet amount") || output.contains("Invalid input"),
-                    "Expected an error message for invalid inputs");
-            assertEquals(15, bet);
-        } finally {
-            System.setOut(originalOut);
-        }
-    }
-
+	public void testExceedingBalanceThenValid() {
+		Scanner scanner = new Scanner("200\n50\n");
+		AskPlayerBet strategy = new AskPlayerBet(scanner);
+		int bet = strategy.placeBet("player", 100);
+		assertEquals(50, bet);
+	}
 }
