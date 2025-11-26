@@ -12,7 +12,7 @@ public class Card {
 	 * Store the suit of the card (enum)
 	 */	
 	private Suit suit;
-	
+		
 	/**
 	 * Store the face of the card (enum)
 	 */	
@@ -122,5 +122,6 @@ public class Card {
 				default: return Integer.toString(value);
 			}
 		}
+
 	}
 }
