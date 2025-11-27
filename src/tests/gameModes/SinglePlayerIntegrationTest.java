@@ -45,12 +45,17 @@ public class SinglePlayerIntegrationTest {
 	void insufficientBalance_gameOver() {
 	    String input = """
 	        50
+	        
 	        0
-	        50   
+	        
+	        50  
+	         
 	        H
+	        
 	        H
+	        
 	        H
-	        H
+
 	        Y
 	        N
 	        
@@ -176,30 +181,5 @@ public class SinglePlayerIntegrationTest {
 			assertTrue(true);
 			return;
 	}
-	@Test
-	void testnobalance() {
-		String input = """
-				2
-				
-				1
-				
-				2
-				
-				H
-				
-				H
-				
-				H
-				
-				H
-				
-				Y
-				
-                N
-				""";
-		 System.setIn(new ByteArrayInputStream(input.getBytes()));
-			SinglePlayer.main(new String[0]);
-			assertTrue(true);
-			return;
-	}	
+	
 }
