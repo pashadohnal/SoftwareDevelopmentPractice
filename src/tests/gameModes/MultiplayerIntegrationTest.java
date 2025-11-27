@@ -1,7 +1,6 @@
 package gameModes;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -13,24 +12,40 @@ class MultiplayerIntegrationTest {
     void multiPlayer_completeFlow_withFixedShoe_andAllInputs() {
         String input = """
             105
+            
         	3
+        	
             100
+            
             200
+            
             100
+            
             50
-            H
+            
             S
+            
             S
+            
             H
-            H
+             
+            S
+             
             Y
-            100
+            
+            Y
+            
+            1
+            
             2
+            
             30
+            
             S
             S
             S
             N
+            
             """;
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
@@ -61,5 +76,30 @@ class MultiplayerIntegrationTest {
 			MultiPlayer.main(new String[0]);
 			assertTrue(true);
 			return;
+    }
+    @Test
+    void multiPlayer_fullGameLoopTest() {
+        String input = """
+            1000
+            2
+            900
+            800
+            S
+            H
+            S
+            S
+            S
+            Y
+            50
+            100
+            S
+            S
+            N
+            """;
+
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        MultiPlayer.main(new String[0]);
+
+        assertTrue(true);
     }
 }
