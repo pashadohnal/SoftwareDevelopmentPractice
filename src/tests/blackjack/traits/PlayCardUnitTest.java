@@ -89,7 +89,7 @@ public class PlayCardUnitTest {
         player.drawCard();
 
         assertEquals(2, player.gethandsize(), "Precondition: two cards drawn");
-        assertTrue(player.getValue() > 0, "Precondition: value should be > 0 after draws");
+        assertEquals(16, player.getValue(), "Precondition: hand value should be 16 (5 + 11)");
 
         player.reset();
 
