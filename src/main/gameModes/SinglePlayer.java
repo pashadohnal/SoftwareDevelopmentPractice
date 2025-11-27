@@ -318,9 +318,8 @@ public class SinglePlayer {
 	            return;                 // early exit – no need to stand
 	        }
 	    }
-	    if (dealer.getValue() >= 17 && dealer.getValue() <= 21) {
 	        System.out.println("Dealer stands.");
-	    }
+	    
 	}
     /**
      * Reset hands for the next round while preserving balances.
