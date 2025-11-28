@@ -52,7 +52,6 @@ public class MultiPlayer {
 	}
     
     public static ArrayList<User> askNewUsers(Scanner scanner, Decks decks, int initBalance) {
-		System.out.print("Enter the number of human players (0-6): ");
 		int nPlayers;
 		do {
 			System.out.print("Enter the number of human players (0-6): ");
@@ -146,4 +145,3 @@ public class MultiPlayer {
     }
     
 }
-
