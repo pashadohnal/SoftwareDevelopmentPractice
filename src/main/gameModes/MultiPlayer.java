@@ -87,17 +87,18 @@ public class MultiPlayer {
     }
     
     public static void playRound(ArrayList<Player> players) {
-		// To be implemented: game logic for playing a round
     	for (Player player : players.subList(1, players.size())) {
-			for (Player p : players.subList(1, players.size())) {
+    		for (Player p : players.subList(1, players.size())) {
                 if (p != player) {
                     System.out.println(p.getName() + "'s hand: " + p.handToString(false) +  " (Value: " + p.getValue() + ")");}
                 }
             System.out.println();
-			boolean drew;
+            System.out.println(player.getName() + "'s hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
+            
+    		boolean drew;
 			do {
-				System.out.println(player.getName() + "'s hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
 				drew = player.drawCard();
+				System.out.println(player.getName() + "'s hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
 				if (drew) {
 					System.out.println(player.getName() + " drew a card. New hand: " + player.handToString(false) + " (Value: " + player.getValue() + ")");
 				} else {
@@ -143,6 +144,6 @@ public class MultiPlayer {
     	    System.out.println("Invalid input. Please type Y or N.");
     	}
     }
+    
 }
-
 
